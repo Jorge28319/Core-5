@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.models import User
-
+from .models import Reporte
 
 class RegistroForm(UserCreationForm):
     first_name = forms.CharField(label="Nombre", max_length=150)
@@ -33,3 +33,15 @@ class IngresoForm(AuthenticationForm):
 
     def clean_username(self):
         return self.cleaned_data["username"].lower()
+class ReporteForm(forms.ModelForm):
+    class Meta:
+        model = Reporte
+        fields = ["estado", "detalle", "referencia"]
+        labels = {
+            "detalle": "Detalle (opcional)",
+            "referencia": "¿Dónde estás?",
+        }
+        widgets = {
+            "detalle": forms.TextInput(attrs={"placeholder": "Ej: estoy sin batería"}),
+            "referencia": forms.TextInput(attrs={"placeholder": "Ej: en la casa, en la U"}),
+        }

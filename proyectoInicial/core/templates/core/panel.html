@@ -1,0 +1,21 @@
+{% extends "core/base.html" %}
+
+{% block contenido %}
+<div class="tarjeta">
+    <h1>¿Cómo estás?</h1>
+    <p class="suave">Tu reporte llegará a todos tus núcleos.</p>
+    <form method="post">
+        {% csrf_token %}
+        <p>
+            {{ form.referencia.label_tag }}
+            {{ form.referencia }}
+        </p>
+        <p>
+            {{ form.detalle.label_tag }}
+            {{ form.detalle }}
+        </p>
+        <button type="submit" name="estado" value="BIEN" class="boton-estado bien">✓ Estoy bien</button>
+        <button type="submit" name="estado" value="AYUDA" class="boton-estado ayuda">⚠ Necesito ayuda</button>
+    </form>
+</div>
+{% endblock %}
