@@ -142,3 +142,15 @@ button {
 .cuenta form {
     margin: 0;
 }
+.errorlist {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    color: var(--naranjo);
+    font-size: 16px;
+}
+
+.helptext {
+    font-size: 14px;
+    color: var(--texto-suave);
+}

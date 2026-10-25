@@ -26,7 +26,7 @@
         </form>
     {% else %}
         <a href="{% url 'login' %}">Iniciar sesión</a>
-        <a href="#" class="boton">Crear cuenta</a>
+        <a href="{% url 'registro' %}" class="boton">Crear cuenta</a>
     {% endif %}
 </div>
         </div>
