@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Repórtate ya</title>
+    <link rel="stylesheet" href="{% static 'core/estilos.css' %}">
+</head>
+<body>
+    <header class="barra">
+        <div class="barra-contenido">
+            <a href="/" class="logo"><span class="logo-icono">♥</span> Repórtate ya</a>
+            <nav class="menu">
+                <a href="/">Inicio</a>
+                <a href="#">Panel</a>
+                <a href="#">Núcleos</a>
+                <a href="#">Nosotros</a>
+            </nav>
+            <div class="cuenta">
+                <a href="#">Iniciar sesión</a>
+                <a href="#" class="boton">Crear cuenta</a>
+            </div>
+        </div>
+    </header>
+    <main>
+        {% block contenido %}{% endblock %}
+    </main>
+</body>
+</html>
