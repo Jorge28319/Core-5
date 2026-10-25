@@ -17,10 +17,18 @@
                 <a href="#">Núcleos</a>
                 <a href="#">Nosotros</a>
             </nav>
-            <div class="cuenta">
-                <a href="#">Iniciar sesión</a>
-                <a href="#" class="boton">Crear cuenta</a>
-            </div>
+           <div class="cuenta">
+    {% if user.is_authenticated %}
+        <span>{{ user.first_name|default:user.username }}</span>
+        <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit" class="enlace">Salir</button>
+        </form>
+    {% else %}
+        <a href="{% url 'login' %}">Iniciar sesión</a>
+        <a href="{% url 'registro' %}" class="boton">Crear cuenta</a>
+    {% endif %}
+</div>
         </div>
     </header>
     <main>
