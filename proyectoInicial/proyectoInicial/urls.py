@@ -23,7 +23,7 @@ from core.forms import IngresoForm
 urlpatterns = [
     path("registro/", views.registro, name="registro"),
     path("admin/", admin.site.urls),
-    path("", views.inicio, name="inicio"),
-       path("ingresar/", auth_views.LoginView.as_view(authentication_form=IngresoForm), name="login"),
+    path("", views.inicio, name="inicio"), path("panel/", views.panel, name="panel"),
+    path("ingresar/", auth_views.LoginView.as_view(authentication_form=IngresoForm), name="login"),
     path("salir/", auth_views.LogoutView.as_view(), name="logout"),
 ]

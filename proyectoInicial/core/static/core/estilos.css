@@ -154,3 +154,39 @@ button {
     font-size: 14px;
     color: var(--texto-suave);
 }
+.suave {
+    color: var(--texto-suave);
+    font-size: 16px;
+}
+
+.boton-estado {
+    display: block;
+    width: 100%;
+    margin-top: 12px;
+    padding: 16px;
+    border-radius: 12px;
+    color: #ffffff;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.bien {
+    background: var(--verde);
+}
+
+.ayuda {
+    background: var(--naranjo);
+}
+.ultimo {
+    margin-top: 20px;
+    padding-top: 12px;
+    border-top: 1px solid var(--borde);
+}
+
+.etiqueta {
+    margin: 0;
+    font-size: 13px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: var(--texto-suave);
+}
