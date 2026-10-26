@@ -1,10 +1,12 @@
 {% extends "core/base.html" %}
+{% load l10n %}
 
 {% block contenido %}
 <div class="tarjeta">
     <h1>¿Cómo estás?</h1>
     {% if nucleos %}
         <p class="suave">Tu reporte llegará a: {{ nucleos|join:", " }}.</p>
+        <p id="aviso-gps" class="suave"></p>
         <form method="post">
             {% csrf_token %}
             {{ form.latitud }}
@@ -25,11 +27,36 @@
         <div class="ultimo">
             <p class="etiqueta">Tu último reporte</p>
             {% if ultimo %}
-                <p>{{ ultimo.get_estado_display }} · {{ ultimo.fecha_hora|date:"d/m H:i" }} · {{ ultimo.referencia }}</p>
+                <p>
+                    {{ ultimo.get_estado_display }} · {{ ultimo.fecha_hora|date:"d/m H:i" }}
+                    {% if ultimo.referencia %} · {{ ultimo.referencia }}{% endif %}
+                    {% if ultimo.latitud is not None %}
+                        · <a class="enlace-mapa" href="https://www.google.com/maps?q={{ ultimo.latitud|unlocalize }},{{ ultimo.longitud|unlocalize }}" target="_blank">Ver ubicación ↗</a>
+                    {% endif %}
+                </p>
             {% else %}
                 <p>Aún no te has reportado.</p>
             {% endif %}
         </div>
+        <script>
+            var aviso = document.getElementById("aviso-gps");
+            if ("geolocation" in navigator) {
+                aviso.textContent = "Buscando tu ubicación...";
+                navigator.geolocation.getCurrentPosition(
+                    function (posicion) {
+                        document.getElementById("id_latitud").value = posicion.coords.latitude;
+                        document.getElementById("id_longitud").value = posicion.coords.longitude;
+                        aviso.textContent = "📍 Tu ubicación se adjuntará al reporte.";
+                    },
+                    function () {
+                        aviso.textContent = "No pudimos obtener tu ubicación. Escribe dónde estás.";
+                    },
+                    { enableHighAccuracy: true, timeout: 10000 }
+                );
+            } else {
+                aviso.textContent = "Tu navegador no comparte la ubicación. Escribe dónde estás.";
+            }
+        </script>
     {% else %}
         <p>Todavía no estás en ningún núcleo. Pide a tu familia el código de invitación para unirte.</p>
     {% endif %}
