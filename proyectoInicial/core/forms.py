@@ -1,8 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.models import User
-from .models import Reporte
-from .models import Reporte
+from .models import Nucleo, Reporte
 
 class RegistroForm(UserCreationForm):
     first_name = forms.CharField(label="Nombre", max_length=150)
@@ -55,3 +54,24 @@ class ReporteForm(forms.ModelForm):
         if not tiene_gps and not datos.get("referencia"):
             self.add_error("referencia", "No pudimos obtener tu ubicación. Escribe dónde estás.")
         return datos
+
+
+class CrearNucleoForm(forms.Form):
+    nombre = forms.CharField(
+        label="Nombre del núcleo",
+        max_length=50,
+        widget=forms.TextInput(attrs={"placeholder": "Ej: Familia, Oficina"}),
+    )
+
+class UnirseForm(forms.Form):
+    codigo = forms.CharField(
+        label="Código de invitación",
+        max_length=10,
+        widget=forms.TextInput(attrs={"placeholder": "Ej: RJS-482"}),
+    )
+
+    def clean_codigo(self):
+        codigo = self.cleaned_data["codigo"].upper().replace("-", "").replace(" ", "")
+        if not Nucleo.objects.filter(codigo_invitacion=codigo).exists():
+            raise forms.ValidationError("No encontramos un núcleo con ese código. Revisa que esté bien escrito.")
+        return codigo

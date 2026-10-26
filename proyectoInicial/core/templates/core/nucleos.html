@@ -1,0 +1,40 @@
+{% extends "core/base.html" %}
+
+{% block contenido %}
+<p class="etiqueta naranjo">Prepárate antes de la emergencia</p>
+<h1>Núcleos</h1>
+<p class="suave">Crea un núcleo una sola vez y comparte su código. Cuando ocurra un sismo, cada integrante solo tendrá que reportarse.</p>
+
+<div class="columnas">
+    <div class="tarjeta">
+        <h2>Crear un núcleo</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ crear_form.as_p }}
+            <button type="submit" name="accion" value="crear" class="boton">Crear núcleo</button>
+        </form>
+    </div>
+    <div class="tarjeta">
+        <h2>Unirme a un núcleo</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ unirse_form.as_p }}
+            <button type="submit" name="accion" value="unirse" class="boton">Unirme</button>
+        </form>
+    </div>
+</div>
+
+<h2>Tus núcleos</h2>
+<div class="columnas">
+    {% for nucleo in mis_nucleos %}
+        <div class="tarjeta">
+            <h2>{{ nucleo.nombre }}</h2>
+            <p class="etiqueta">Código de invitación</p>
+            <p class="codigo">{{ nucleo.codigo_invitacion|slice:":3" }}-{{ nucleo.codigo_invitacion|slice:"3:" }}</p>
+            <p class="suave">Integrantes: {% for membresia in nucleo.membresia_set.all %}{{ membresia.usuario.first_name|default:membresia.usuario.username }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+        </div>
+    {% empty %}
+        <p>Todavía no estás en ningún núcleo.</p>
+    {% endfor %}
+</div>
+{% endblock %}

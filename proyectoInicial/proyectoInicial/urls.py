@@ -20,7 +20,7 @@ from django.urls import path
 
 from core import views
 from core.forms import IngresoForm
-urlpatterns = [
+urlpatterns = [path("nucleos/", views.nucleos, name="nucleos"),
     path("registro/", views.registro, name="registro"),
     path("admin/", admin.site.urls),
     path("", views.inicio, name="inicio"), path("panel/", views.panel, name="panel"),

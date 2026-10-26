@@ -14,7 +14,7 @@
             <nav class="menu">
                 <a href="/">Inicio</a>
                 <a href="{% url 'panel' %}">Panel</a>
-                <a href="#">Núcleos</a>
+                <a href="{% url 'nucleos' %}">Núcleos</a>
                 <a href="#">Nosotros</a>
             </nav>
            <div class="cuenta">
@@ -32,6 +32,9 @@
         </div>
     </header>
     <main>
+                {% for mensaje in messages %}
+            <p class="mensaje">{{ mensaje }}</p>
+        {% endfor %}
         {% block contenido %}{% endblock %}
     </main>
 </body>
