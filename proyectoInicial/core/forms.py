@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth.models import User
 from .models import Reporte
+from .models import Reporte
 
 class RegistroForm(UserCreationForm):
     first_name = forms.CharField(label="Nombre", max_length=150)
@@ -36,12 +37,21 @@ class IngresoForm(AuthenticationForm):
 class ReporteForm(forms.ModelForm):
     class Meta:
         model = Reporte
-        fields = ["estado", "detalle", "referencia"]
+        fields = ["estado", "detalle", "referencia", "latitud", "longitud"]
         labels = {
             "detalle": "Detalle (opcional)",
-            "referencia": "¿Dónde estás?",
+            "referencia": "¿Dónde estás? (opcional si compartes tu ubicación)",
         }
         widgets = {
             "detalle": forms.TextInput(attrs={"placeholder": "Ej: estoy sin batería"}),
             "referencia": forms.TextInput(attrs={"placeholder": "Ej: en la casa, en la U"}),
+            "latitud": forms.HiddenInput(),
+            "longitud": forms.HiddenInput(),
         }
+
+    def clean(self):
+        datos = super().clean()
+        tiene_gps = datos.get("latitud") is not None and datos.get("longitud") is not None
+        if not tiene_gps and not datos.get("referencia"):
+            self.add_error("referencia", "No pudimos obtener tu ubicación. Escribe dónde estás.")
+        return datos

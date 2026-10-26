@@ -3,19 +3,35 @@
 {% block contenido %}
 <div class="tarjeta">
     <h1>¿Cómo estás?</h1>
-    <p class="suave">Tu reporte llegará a todos tus núcleos.</p>
-    <form method="post">
-        {% csrf_token %}
-        <p>
-            {{ form.referencia.label_tag }}
-            {{ form.referencia }}
-        </p>
-        <p>
-            {{ form.detalle.label_tag }}
-            {{ form.detalle }}
-        </p>
-        <button type="submit" name="estado" value="BIEN" class="boton-estado bien">✓ Estoy bien</button>
-        <button type="submit" name="estado" value="AYUDA" class="boton-estado ayuda">⚠ Necesito ayuda</button>
-    </form>
+    {% if nucleos %}
+        <p class="suave">Tu reporte llegará a: {{ nucleos|join:", " }}.</p>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.latitud }}
+            {{ form.longitud }}
+            <p>
+                {{ form.referencia.label_tag }}
+                {{ form.referencia }}
+                {{ form.referencia.errors }}
+            </p>
+            <p>
+                {{ form.detalle.label_tag }}
+                {{ form.detalle }}
+                {{ form.detalle.errors }}
+            </p>
+            <button type="submit" name="estado" value="BIEN" class="boton-estado bien">✓ Estoy bien</button>
+            <button type="submit" name="estado" value="AYUDA" class="boton-estado ayuda">⚠ Necesito ayuda</button>
+        </form>
+        <div class="ultimo">
+            <p class="etiqueta">Tu último reporte</p>
+            {% if ultimo %}
+                <p>{{ ultimo.get_estado_display }} · {{ ultimo.fecha_hora|date:"d/m H:i" }} · {{ ultimo.referencia }}</p>
+            {% else %}
+                <p>Aún no te has reportado.</p>
+            {% endif %}
+        </div>
+    {% else %}
+        <p>Todavía no estás en ningún núcleo. Pide a tu familia el código de invitación para unirte.</p>
+    {% endif %}
 </div>
 {% endblock %}
