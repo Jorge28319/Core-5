@@ -252,3 +252,82 @@ button {
     color: var(--marca);
     font-weight: bold;
 }
+.panel {
+    display: grid;
+    gap: 16px;
+    align-items: start;
+}
+
+@media (min-width: 800px) {
+    .panel {
+        grid-template-columns: 380px 1fr;
+    }
+}
+
+.panel .tarjeta {
+    max-width: none;
+    margin: 0;
+}
+
+.pestanas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.pestanas a {
+    padding: 6px 14px;
+    border: 1px solid var(--borde);
+    border-radius: 999px;
+    font-size: 16px;
+}
+
+.pestanas a.activa {
+    background: var(--marca);
+    border-color: var(--marca);
+    color: #ffffff;
+}
+
+.integrantes {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.integrante {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    border-top: 1px solid var(--borde);
+}
+
+.integrante .suave {
+    display: block;
+}
+
+.estado {
+    flex-shrink: 0;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.estado-bien {
+    background: var(--verde-claro);
+    color: var(--verde);
+}
+
+.estado-ayuda {
+    background: var(--naranjo-claro);
+    color: var(--naranjo);
+}
+
+.estado-no {
+    background: var(--gris);
+    color: var(--texto);
+}
