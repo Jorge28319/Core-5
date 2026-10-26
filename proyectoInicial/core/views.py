@@ -4,7 +4,7 @@ import string
 from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 
 from .forms import CrearNucleoForm, RegistroForm, ReporteForm, UnirseForm
@@ -25,12 +25,30 @@ def registro(request):
         form = RegistroForm()
     return render(request, "core/registro.html", {"form": form})
 
-def abrir_eventos(nucleos):
-    ahora = timezone.now()
+def abrir_eventos(nucleos, inicio):
     for nucleo in nucleos:
-        hay_evento_activo = Evento.objects.filter(nucleo=nucleo, fecha_cierre__gt=ahora).exists()
+        hay_evento_activo = Evento.objects.filter(nucleo=nucleo, fecha_cierre__gt=inicio).exists()
         if not hay_evento_activo:
-            Evento.objects.create(nucleo=nucleo)
+            Evento.objects.create(nucleo=nucleo, fecha_inicio=inicio)
+
+
+ORDEN_ESTADOS = {"AYUDA": 0, "NO": 1, "BIEN": 2}
+
+
+def estados_del_nucleo(nucleo):
+    evento = Evento.objects.filter(nucleo=nucleo, fecha_cierre__gt=timezone.now()).order_by("-fecha_inicio").first()
+    filas = []
+    if evento:
+        for membresia in nucleo.membresia_set.all():
+            reporte = (
+                Reporte.objects.filter(usuario=membresia.usuario, fecha_hora__gte=evento.fecha_inicio)
+                .order_by("-fecha_hora")
+                .first()
+            )
+            estado = reporte.estado if reporte else "NO"
+            filas.append({"usuario": membresia.usuario, "reporte": reporte, "estado": estado})
+        filas.sort(key=lambda fila: ORDEN_ESTADOS[fila["estado"]])
+    return evento, filas
 
 
 @login_required
@@ -42,13 +60,32 @@ def panel(request):
             reporte = form.save(commit=False)
             reporte.usuario = request.user
             reporte.save()
-            abrir_eventos(nucleos)
+            abrir_eventos(nucleos, reporte.fecha_hora)
             return redirect("panel")
     else:
         form = ReporteForm()
     ultimo = Reporte.objects.filter(usuario=request.user).order_by("-fecha_hora").first()
-    return render(request, "core/panel.html", {"form": form, "nucleos": nucleos, "ultimo": ultimo})
 
+    seleccionado = None
+    evento = None
+    filas = []
+    if nucleos.exists():
+        nucleo_id = request.GET.get("nucleo", "")
+        if nucleo_id.isdigit():
+            seleccionado = get_object_or_404(nucleos, id=nucleo_id)
+        else:
+            seleccionado = nucleos.first()
+        evento, filas = estados_del_nucleo(seleccionado)
+
+    return render(request, "core/panel.html", {
+        "form": form,
+        "nucleos": nucleos,
+        "ultimo": ultimo,
+        "seleccionado": seleccionado,
+        "evento": evento,
+        "filas": filas,
+        "ahora": timezone.now(),
+    })
 def generar_codigo():
     while True:
         letras = "".join(secrets.choice(string.ascii_uppercase) for _ in range(3))

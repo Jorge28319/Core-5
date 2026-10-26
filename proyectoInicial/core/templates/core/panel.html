@@ -2,63 +2,110 @@
 {% load l10n %}
 
 {% block contenido %}
-<div class="tarjeta">
-    <h1>¿Cómo estás?</h1>
-    {% if nucleos %}
-        <p class="suave">Tu reporte llegará a: {{ nucleos|join:", " }}.</p>
-        <p id="aviso-gps" class="suave"></p>
-        <form method="post">
-            {% csrf_token %}
-            {{ form.latitud }}
-            {{ form.longitud }}
-            <p>
-                {{ form.referencia.label_tag }}
-                {{ form.referencia }}
-                {{ form.referencia.errors }}
-            </p>
-            <p>
-                {{ form.detalle.label_tag }}
-                {{ form.detalle }}
-                {{ form.detalle.errors }}
-            </p>
-            <button type="submit" name="estado" value="BIEN" class="boton-estado bien">✓ Estoy bien</button>
-            <button type="submit" name="estado" value="AYUDA" class="boton-estado ayuda">⚠ Necesito ayuda</button>
-        </form>
-        <div class="ultimo">
-            <p class="etiqueta">Tu último reporte</p>
-            {% if ultimo %}
+<div class="panel">
+    <div class="tarjeta">
+        <h1>¿Cómo estás?</h1>
+        {% if nucleos %}
+            <p class="suave">Tu reporte llegará a: {{ nucleos|join:", " }}.</p>
+            <p id="aviso-gps" class="suave"></p>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.latitud }}
+                {{ form.longitud }}
                 <p>
-                    {{ ultimo.get_estado_display }} · {{ ultimo.fecha_hora|date:"d/m H:i" }}
-                    {% if ultimo.referencia %} · {{ ultimo.referencia }}{% endif %}
-                    {% if ultimo.latitud is not None %}
-                        · <a class="enlace-mapa" href="https://www.google.com/maps?q={{ ultimo.latitud|unlocalize }},{{ ultimo.longitud|unlocalize }}" target="_blank">Ver ubicación ↗</a>
-                    {% endif %}
+                    {{ form.referencia.label_tag }}
+                    {{ form.referencia }}
+                    {{ form.referencia.errors }}
                 </p>
-            {% else %}
-                <p>Aún no te has reportado.</p>
-            {% endif %}
-        </div>
-        <script>
-            var aviso = document.getElementById("aviso-gps");
-            if ("geolocation" in navigator) {
-                aviso.textContent = "Buscando tu ubicación...";
-                navigator.geolocation.getCurrentPosition(
-                    function (posicion) {
-                        document.getElementById("id_latitud").value = posicion.coords.latitude;
-                        document.getElementById("id_longitud").value = posicion.coords.longitude;
-                        aviso.textContent = "📍 Tu ubicación se adjuntará al reporte.";
-                    },
-                    function () {
-                        aviso.textContent = "No pudimos obtener tu ubicación. Escribe dónde estás.";
-                    },
-                    { enableHighAccuracy: true, timeout: 10000 }
-                );
-            } else {
-                aviso.textContent = "Tu navegador no comparte la ubicación. Escribe dónde estás.";
-            }
-        </script>
-    {% else %}
-        <p>Todavía no estás en ningún núcleo. Pide a tu familia el código de invitación para unirte.</p>
+                <p>
+                    {{ form.detalle.label_tag }}
+                    {{ form.detalle }}
+                    {{ form.detalle.errors }}
+                </p>
+                <button type="submit" name="estado" value="BIEN" class="boton-estado bien">✓ Estoy bien</button>
+                <button type="submit" name="estado" value="AYUDA" class="boton-estado ayuda">⚠ Necesito ayuda</button>
+            </form>
+            <div class="ultimo">
+                <p class="etiqueta">Tu último reporte</p>
+                {% if ultimo %}
+                    <p>
+                        {{ ultimo.get_estado_display }} · {{ ultimo.fecha_hora|date:"d/m H:i" }}
+                        {% if ultimo.referencia %} · {{ ultimo.referencia }}{% endif %}
+                        {% if ultimo.latitud is not None %}
+                            · <a class="enlace-mapa" href="https://www.google.com/maps?q={{ ultimo.latitud|unlocalize }},{{ ultimo.longitud|unlocalize }}" target="_blank">Ver ubicación ↗</a>
+                        {% endif %}
+                    </p>
+                {% else %}
+                    <p>Aún no te has reportado.</p>
+                {% endif %}
+            </div>
+            <script>
+                var aviso = document.getElementById("aviso-gps");
+                if ("geolocation" in navigator) {
+                    aviso.textContent = "Buscando tu ubicación...";
+                    navigator.geolocation.getCurrentPosition(
+                        function (posicion) {
+                            document.getElementById("id_latitud").value = posicion.coords.latitude;
+                            document.getElementById("id_longitud").value = posicion.coords.longitude;
+                            aviso.textContent = "📍 Tu ubicación se adjuntará al reporte.";
+                        },
+                        function () {
+                            aviso.textContent = "No pudimos obtener tu ubicación. Escribe dónde estás.";
+                        },
+                        { enableHighAccuracy: true, timeout: 10000 }
+                    );
+                } else {
+                    aviso.textContent = "Tu navegador no comparte la ubicación. Escribe dónde estás.";
+                }
+            </script>
+        {% else %}
+            <p>Todavía no estás en ningún núcleo. <a class="enlace-mapa" href="{% url 'nucleos' %}">Crea uno o únete con un código</a>.</p>
+        {% endif %}
+    </div>
+
+    {% if seleccionado %}
+    <div class="tarjeta">
+        <nav class="pestanas">
+            {% for nucleo in nucleos %}
+                <a href="?nucleo={{ nucleo.id }}" class="{% if nucleo == seleccionado %}activa{% endif %}">{{ nucleo.nombre }}</a>
+            {% endfor %}
+        </nav>
+        <h2>{{ seleccionado.nombre }}</h2>
+        <p class="suave">Actualizado a las {{ ahora|date:"H:i" }} · <a class="enlace-mapa" href="?nucleo={{ seleccionado.id }}">Actualizar</a></p>
+        {% if evento %}
+            <p class="suave">Emergencia activa desde el {{ evento.fecha_inicio|date:"d/m H:i" }}.</p>
+            <ul class="integrantes">
+                {% for fila in filas %}
+                    <li class="integrante">
+                        <div>
+                            <strong>{{ fila.usuario.first_name|default:fila.usuario.username }}</strong>{% if fila.usuario == user %} (tú){% endif %}
+                            {% if fila.reporte %}
+                                <span class="suave">
+                                    {{ fila.reporte.fecha_hora|date:"H:i" }}
+                                    {% if fila.reporte.referencia %} · {{ fila.reporte.referencia }}{% endif %}
+                                    {% if fila.reporte.detalle %} · {{ fila.reporte.detalle }}{% endif %}
+                                </span>
+                                {% if fila.reporte.latitud is not None %}
+                                    <a class="enlace-mapa" href="https://www.google.com/maps?q={{ fila.reporte.latitud|unlocalize }},{{ fila.reporte.longitud|unlocalize }}" target="_blank">Ver ubicación ↗</a>
+                                {% endif %}
+                            {% else %}
+                                <span class="suave">Sin reporte desde el inicio de la emergencia</span>
+                            {% endif %}
+                        </div>
+                        {% if fila.estado == "AYUDA" %}
+                            <span class="estado estado-ayuda">⚠ Necesito ayuda</span>
+                        {% elif fila.estado == "BIEN" %}
+                            <span class="estado estado-bien">✓ Estoy bien</span>
+                        {% else %}
+                            <span class="estado estado-no">○ No se ha reportado</span>
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No hay una emergencia activa en este núcleo. Cuando alguien se reporte, se abrirá una por 72 horas.</p>
+        {% endif %}
+    </div>
     {% endif %}
 </div>
 {% endblock %}
