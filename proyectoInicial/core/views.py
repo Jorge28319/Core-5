@@ -1,5 +1,6 @@
 import secrets
 import string
+import math
 
 from django.contrib import messages
 from django.contrib.auth import login
@@ -127,3 +128,23 @@ def nucleos(request):
         "unirse_form": unirse_form,
         "mis_nucleos": mis_nucleos,
     })
+
+def enlace_mapa(lat, lng):
+    return f"https://www.google.com/maps?q={lat},{lng}"
+
+
+def distancia_km(lat1, lng1, lat2, lng2):
+    radio_tierra = 6371
+    dlat = math.radians(lat2 - lat1)
+    dlng = math.radians(lng2 - lng1)
+    a = (math.sin(dlat / 2) ** 2
+         + math.cos(math.radians(lat1)) * math.cos(math.radians(lat2)) * math.sin(dlng / 2) ** 2)
+    return 2 * radio_tierra * math.asin(math.sqrt(a))
+
+
+def texto_distancia(km):
+    if km < 0.05:
+        return "menos de 50 m"
+    if km < 1:
+        return f"{round(km * 1000, -1):.0f} m"
+    return f"{km:.1f} km".replace(".", ",")
