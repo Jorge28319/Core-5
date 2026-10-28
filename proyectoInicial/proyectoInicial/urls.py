@@ -26,4 +26,5 @@ urlpatterns = [path("nucleos/", views.nucleos, name="nucleos"),    path("mapa/",
     path("", views.inicio, name="inicio"), path("panel/", views.panel, name="panel"),
     path("ingresar/", auth_views.LoginView.as_view(authentication_form=IngresoForm), name="login"),
     path("salir/", auth_views.LogoutView.as_view(), name="logout"),
+    path("nosotros/", views.nosotros, name="nosotros"),
 ]
