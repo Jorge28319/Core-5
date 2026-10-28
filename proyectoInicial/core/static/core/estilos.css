@@ -331,6 +331,49 @@ button {
     background: var(--claro);
     color: var(--texto);
 }
+
+/* Cabecera del núcleo en el panel */
+
+.cabecera-nucleo {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.cabecera-nucleo p {
+    margin: 0 0 4px;
+    font-size: 14px;
+}
+
+.cabecera-nucleo h2 {
+    margin: 0;
+    font-size: 28px;
+}
+
+.acciones-nucleo {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+}
+
+.boton-borde {
+    padding: 8px 14px;
+    border: 1px solid var(--borde);
+    border-radius: 8px;
+    background: #ffffff;
+    color: var(--marca);
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.boton-borde:hover {
+    background: var(--fondo-suave);
+}
+
 /* Mapa */
 
 .tarjeta-mapa {
