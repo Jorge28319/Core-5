@@ -148,3 +148,56 @@ def texto_distancia(km):
     if km < 1:
         return f"{round(km * 1000, -1):.0f} m"
     return f"{km:.1f} km".replace(".", ",")
+
+
+def puntos_mapa(filas):
+    puntos = []
+    for fila in filas:
+        reporte = fila["reporte"]
+        if reporte and reporte.latitud is not None:
+            puntos.append({
+                "lat": reporte.latitud,
+                "lng": reporte.longitud,
+                "nombre": fila["usuario"].first_name or fila["usuario"].username,
+                "estado": fila["estado"],
+                "hora": timezone.localtime(reporte.fecha_hora).strftime("%H:%M"),
+                "enlace": enlace_mapa(reporte.latitud, reporte.longitud),
+            })
+    return puntos
+
+
+@login_required
+def mapa(request):
+    nucleos = Nucleo.objects.filter(membresia__usuario=request.user)
+    if not nucleos.exists():
+        return redirect("nucleos")
+    nucleo_id = request.GET.get("nucleo", "")
+    if nucleo_id.isdigit():
+        seleccionado = get_object_or_404(nucleos, id=nucleo_id)
+    else:
+        seleccionado = nucleos.first()
+    evento, filas = estados_del_nucleo(seleccionado)
+
+    propio = None
+    for fila in filas:
+        reporte = fila["reporte"]
+        fila["enlace"] = ""
+        fila["distancia"] = ""
+        if reporte and reporte.latitud is not None:
+            fila["enlace"] = enlace_mapa(reporte.latitud, reporte.longitud)
+            if fila["usuario"] == request.user:
+                propio = reporte
+    if propio:
+        for fila in filas:
+            reporte = fila["reporte"]
+            if fila["enlace"] and fila["usuario"] != request.user:
+                km = distancia_km(propio.latitud, propio.longitud, reporte.latitud, reporte.longitud)
+                fila["distancia"] = f"A {texto_distancia(km)} de ti"
+
+    return render(request, "core/mapa.html", {
+        "nucleos": nucleos,
+        "seleccionado": seleccionado,
+        "evento": evento,
+        "filas": filas,
+        "puntos": puntos_mapa(filas),
+    })

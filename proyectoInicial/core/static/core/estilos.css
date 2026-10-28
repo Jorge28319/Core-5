@@ -331,3 +331,25 @@ button {
     background: var(--claro);
     color: var(--texto);
 }
+/* Mapa */
+
+.tarjeta-mapa {
+    max-width: 640px;
+}
+
+.mapa-leaflet {
+    height: 380px;
+    margin: 12px 0 16px;
+    border: 1px solid var(--borde);
+    border-radius: 12px;
+}
+
+.leaflet-tooltip {
+    font-family: system-ui, sans-serif;
+    font-weight: bold;
+}
+
+.leaflet-popup-content a {
+    color: var(--marca);
+    font-weight: bold;
+}
