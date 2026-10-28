@@ -127,5 +127,5 @@ MAILERS = {
 }
 
 LOGIN_URL = "login"
-LOGIN_REDIRECT_URL = "inicio"
+LOGIN_REDIRECT_URL = "panel"
 LOGOUT_REDIRECT_URL = "inicio"
