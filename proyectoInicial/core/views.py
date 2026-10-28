@@ -1,5 +1,6 @@
 import secrets
 import string
+import math
 
 from django.contrib import messages
 from django.contrib.auth import login
@@ -126,4 +127,77 @@ def nucleos(request):
         "crear_form": crear_form,
         "unirse_form": unirse_form,
         "mis_nucleos": mis_nucleos,
+    })
+
+def enlace_mapa(lat, lng):
+    return f"https://www.google.com/maps?q={lat},{lng}"
+
+
+def distancia_km(lat1, lng1, lat2, lng2):
+    radio_tierra = 6371
+    dlat = math.radians(lat2 - lat1)
+    dlng = math.radians(lng2 - lng1)
+    a = (math.sin(dlat / 2) ** 2
+         + math.cos(math.radians(lat1)) * math.cos(math.radians(lat2)) * math.sin(dlng / 2) ** 2)
+    return 2 * radio_tierra * math.asin(math.sqrt(a))
+
+
+def texto_distancia(km):
+    if km < 0.05:
+        return "menos de 50 m"
+    if km < 1:
+        return f"{round(km * 1000, -1):.0f} m"
+    return f"{km:.1f} km".replace(".", ",")
+
+
+def puntos_mapa(filas):
+    puntos = []
+    for fila in filas:
+        reporte = fila["reporte"]
+        if reporte and reporte.latitud is not None:
+            puntos.append({
+                "lat": reporte.latitud,
+                "lng": reporte.longitud,
+                "nombre": fila["usuario"].first_name or fila["usuario"].username,
+                "estado": fila["estado"],
+                "hora": timezone.localtime(reporte.fecha_hora).strftime("%H:%M"),
+                "enlace": enlace_mapa(reporte.latitud, reporte.longitud),
+            })
+    return puntos
+
+
+@login_required
+def mapa(request):
+    nucleos = Nucleo.objects.filter(membresia__usuario=request.user)
+    if not nucleos.exists():
+        return redirect("nucleos")
+    nucleo_id = request.GET.get("nucleo", "")
+    if nucleo_id.isdigit():
+        seleccionado = get_object_or_404(nucleos, id=nucleo_id)
+    else:
+        seleccionado = nucleos.first()
+    evento, filas = estados_del_nucleo(seleccionado)
+
+    propio = None
+    for fila in filas:
+        reporte = fila["reporte"]
+        fila["enlace"] = ""
+        fila["distancia"] = ""
+        if reporte and reporte.latitud is not None:
+            fila["enlace"] = enlace_mapa(reporte.latitud, reporte.longitud)
+            if fila["usuario"] == request.user:
+                propio = reporte
+    if propio:
+        for fila in filas:
+            reporte = fila["reporte"]
+            if fila["enlace"] and fila["usuario"] != request.user:
+                km = distancia_km(propio.latitud, propio.longitud, reporte.latitud, reporte.longitud)
+                fila["distancia"] = f"A {texto_distancia(km)} de ti"
+
+    return render(request, "core/mapa.html", {
+        "nucleos": nucleos,
+        "seleccionado": seleccionado,
+        "evento": evento,
+        "filas": filas,
+        "puntos": puntos_mapa(filas),
     })

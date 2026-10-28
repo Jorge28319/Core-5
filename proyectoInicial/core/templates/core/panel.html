@@ -6,7 +6,7 @@
     <div class="tarjeta">
         <h1>¿Cómo estás?</h1>
         {% if nucleos %}
-            <p class="suave">Tu reporte llegará a: {{ nucleos|join:", " }}.</p>
+                    <p class="suave">Actualizado a las {{ ahora|date:"H:i" }} · <a class="enlace-mapa" href="?nucleo={{ seleccionado.id }}">Actualizar</a> · <a class="enlace-mapa" href="{% url 'mapa' %}?nucleo={{ seleccionado.id }}">Ver mapa</a></p>
             <p id="aviso-gps" class="suave"></p>
             <form method="post">
                 {% csrf_token %}
