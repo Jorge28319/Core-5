@@ -15,7 +15,7 @@
                 <a href="/">Inicio</a>
                 <a href="{% url 'panel' %}">Panel</a>
                 <a href="{% url 'nucleos' %}">Núcleos</a>
-                <a href="#">Nosotros</a>
+                <a href="{% url 'nosotros' %}">Nosotros</a>
             </nav>
             <div class="cuenta">
                 {% if user.is_authenticated %}

@@ -70,8 +70,19 @@
                 <a href="?nucleo={{ nucleo.id }}" class="{% if nucleo == seleccionado %}activa{% endif %}">{{ nucleo.nombre }}</a>
             {% endfor %}
         </nav>
-        <h2>{{ seleccionado.nombre }}</h2>
-        <p class="suave">Actualizado a las {{ ahora|date:"H:i" }} · <a class="enlace-mapa" href="?nucleo={{ seleccionado.id }}">Actualizar</a></p>
+        <div class="cabecera-nucleo">
+            <div>
+                <p class="suave">Código {{ seleccionado.codigo_invitacion|slice:":3" }}-{{ seleccionado.codigo_invitacion|slice:"3:" }} · {{ seleccionado.membresia_set.count }} integrantes</p>
+                <h2>{{ seleccionado.nombre }}</h2>
+            </div>
+            <div class="acciones-nucleo">
+                <span class="suave">Actualizado a las {{ ahora|date:"H:i" }}</span>
+                <a class="boton-borde" href="?nucleo={{ seleccionado.id }}">↻ Actualizar</a>
+                {% if evento %}
+                    <a class="boton-borde" href="{% url 'mapa' %}?nucleo={{ seleccionado.id }}">📍 Ver mapa</a>
+                {% endif %}
+            </div>
+        </div>
         {% if evento %}
             <p class="suave">Emergencia activa desde el {{ evento.fecha_inicio|date:"d/m H:i" }}.</p>
             <ul class="integrantes">

@@ -332,26 +332,144 @@ button {
     color: var(--texto);
 }
 
-/*	Pie	de	página	*/
-.pie { 
+/* Pie de página */
+
+.pie {
     margin-top: 48px;
     border-top: 1px solid var(--borde);
-    background: var(--fondo-suave); 
+    background: var(--fondo-suave);
 }
 
 .pie-contenido {
-    max-width:1080px;
-    margin:	0 auto;
+    max-width: 1080px;
+    margin: 0 auto;
     padding: 20px 16px;
-    font-size: 15px; 
+    font-size: 15px;
 }
 
 .pie p {
-    margin:	4px	0;
+    margin: 4px 0;
 }
 
 .pie a {
     color: var(--marca);
     font-weight: bold;
     text-decoration: underline;
+}
+
+/* Nosotros */
+
+.foto-equipo {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: 20px 0;
+    border-radius: 16px;
+}
+
+.equipo {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 14px;
+}
+
+@media (min-width: 800px) {
+    .equipo {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.equipo li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.equipo .suave {
+    display: block;
+}
+
+.iniciales {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--claro);
+    color: var(--marca);
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.contacto {
+    align-self: start;
+}
+
+/* Cabecera del núcleo en el panel */
+
+.cabecera-nucleo {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.cabecera-nucleo p {
+    margin: 0 0 4px;
+    font-size: 14px;
+}
+
+.cabecera-nucleo h2 {
+    margin: 0;
+    font-size: 28px;
+}
+
+.acciones-nucleo {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+}
+
+.boton-borde {
+    padding: 8px 14px;
+    border: 1px solid var(--borde);
+    border-radius: 8px;
+    background: #ffffff;
+    color: var(--marca);
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.boton-borde:hover {
+    background: var(--fondo-suave);
+}
+
+/* Mapa */
+
+.tarjeta-mapa {
+    max-width: 640px;
+}
+
+.mapa-leaflet {
+    height: 380px;
+    margin: 12px 0 16px;
+    border: 1px solid var(--borde);
+    border-radius: 12px;
+}
+
+.leaflet-tooltip {
+    font-family: system-ui, sans-serif;
+    font-weight: bold;
+}
+
+.leaflet-popup-content a {
+    color: var(--marca);
+    font-weight: bold;
 }
