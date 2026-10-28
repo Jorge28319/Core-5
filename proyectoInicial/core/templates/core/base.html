@@ -17,25 +17,34 @@
                 <a href="{% url 'nucleos' %}">Núcleos</a>
                 <a href="#">Nosotros</a>
             </nav>
-           <div class="cuenta">
-    {% if user.is_authenticated %}
-        <span>{{ user.first_name|default:user.username }}</span>
-        <form method="post" action="{% url 'logout' %}">
-            {% csrf_token %}
-            <button type="submit" class="enlace">Salir</button>
-        </form>
-    {% else %}
-        <a href="{% url 'login' %}">Iniciar sesión</a>
-        <a href="{% url 'registro' %}" class="boton">Crear cuenta</a>
-    {% endif %}
-</div>
+            <div class="cuenta">
+                {% if user.is_authenticated %}
+                    <span>{{ user.first_name|default:user.username }}</span>
+                    <form method="post" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="enlace">Salir</button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'login' %}">Iniciar sesión</a>
+                    <a href="{% url 'registro' %}" class="boton">Crear cuenta</a>
+                {% endif %}
+            </div>
         </div>
     </header>
     <main>
-                {% for mensaje in messages %}
+        {% for mensaje in messages %}
             <p class="mensaje">{{ mensaje }}</p>
         {% endfor %}
         {% block contenido %}{% endblock %}
     </main>
+    <footer	class="pie">
+        <div class="pie-contenido">
+            <!--	CAMBIAR:	la	frase	del	pie	de	página	-->
+            	<p><strong>Repórtate ya.</strong> Hecha	para funcionar cuando la señal	es mínima.</p>
+                <p>En una emergencia llama al <a href="tel:131">131</a>	(Ambulancia), <a href="tel:132">132</a>	(Bomberos)	o <a href="tel:133">133</a>	(Carabineros).</p>
+                <!--	CAMBIAR:	los	créditos	-->
+            	<p	class="suave">2026,	Equipo 12, IWG400 Proyecto Inicial,	USM.</p>
+        </div>
+    </footer>
 </body>
 </html>
