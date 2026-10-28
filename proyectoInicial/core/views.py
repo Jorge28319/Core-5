@@ -20,7 +20,7 @@ def registro(request):
         if form.is_valid():
             usuario = form.save()
             login(request, usuario)
-            return redirect("inicio")
+            return redirect("nucleos")
     else:
         form = RegistroForm()
     return render(request, "core/registro.html", {"form": form})
