@@ -127,3 +127,10 @@ def nucleos(request):
         "unirse_form": unirse_form,
         "mis_nucleos": mis_nucleos,
     })
+
+
+
+
+
+def nosotros(request):
+    return render(request, "core/nosotros.html")

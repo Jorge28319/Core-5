@@ -331,3 +331,52 @@ button {
     background: var(--claro);
     color: var(--texto);
 }
+
+
+
+
+
+/* Nosotros */
+.foto-equipo {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 20px 0;
+  border-radius: 16px;
+}
+.equipo {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 14px;
+}
+@media (min-width: 800px) {
+  .equipo {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+.equipo li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.equipo .suave {
+  display: block;
+}
+.iniciales {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--claro);
+  color: var(--marca);
+  font-size: 16px;
+  font-weight: bold;
+}
+.contacto {
+  align-self: start;
+}
