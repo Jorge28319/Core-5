@@ -332,6 +332,31 @@ button {
     color: var(--texto);
 }
 
+/* Pie de página */
+
+.pie {
+    margin-top: 48px;
+    border-top: 1px solid var(--borde);
+    background: var(--fondo-suave);
+}
+
+.pie-contenido {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 20px 16px;
+    font-size: 15px;
+}
+
+.pie p {
+    margin: 4px 0;
+}
+
+.pie a {
+    color: var(--marca);
+    font-weight: bold;
+    text-decoration: underline;
+}
+
 /* Nosotros */
 
 .foto-equipo {
