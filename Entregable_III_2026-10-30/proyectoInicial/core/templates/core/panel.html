@@ -1,0 +1,156 @@
+{% extends "core/base.html" %}
+{% load l10n %}
+
+{% block contenido %}
+{% if seleccionado %}
+<nav class="pestanas">
+    {% for nucleo in nucleos %}
+        <a href="?nucleo={{ nucleo.id }}" class="{% if nucleo == seleccionado %}activa{% endif %}">{{ nucleo.nombre }}</a>
+    {% endfor %}
+</nav>
+<div class="cabecera-nucleo">
+    <div>
+        <p class="suave">Código <strong>{{ seleccionado.codigo_invitacion|slice:":3" }}-{{ seleccionado.codigo_invitacion|slice:"3:" }}</strong> · {{ seleccionado.membresia_set.count }} integrante{{ seleccionado.membresia_set.count|pluralize }}</p>
+        <h1>{{ seleccionado.nombre }}</h1>
+    </div>
+    <div class="acciones-nucleo">
+        <span class="suave">Actualizado a las {{ ahora|date:"H:i" }}</span>
+        <a class="boton-borde" href="?nucleo={{ seleccionado.id }}">↻ Actualizar</a>
+        {% if evento %}
+            <a class="boton-borde" href="{% url 'mapa' %}?nucleo={{ seleccionado.id }}">📍 Ver mapa</a>
+        {% endif %}
+    </div>
+</div>
+{% endif %}
+
+<div class="panel">
+    <div class="tarjeta">
+        <h2>¿Cómo estás?</h2>
+        {% if nucleos %}
+            <p class="suave">Tu reporte llegará a: {{ nucleos|join:", " }}.</p>
+            <p id="aviso-gps" class="suave"></p>
+            <form method="post">
+                {% csrf_token %}
+                {{ form.latitud }}
+                {{ form.longitud }}
+                <p>
+                    {{ form.referencia.label_tag }}
+                    {{ form.referencia }}
+                    {{ form.referencia.errors }}
+                </p>
+                <p>
+                    {{ form.detalle.label_tag }}
+                    {{ form.detalle }}
+                    {{ form.detalle.errors }}
+                </p>
+                <button type="submit" name="estado" value="BIEN" class="boton-estado bien">✓ Estoy bien</button>
+                <button type="submit" name="estado" value="AYUDA" class="boton-estado ayuda">⚠ Necesito ayuda</button>
+            </form>
+            <div class="ultimo">
+                <p class="etiqueta">Tu último reporte</p>
+                {% if ultimo %}
+                    <p>
+                        {{ ultimo.get_estado_display }} · {{ ultimo.fecha_hora|date:"d/m H:i" }}
+                        {% if ultimo.referencia %} · {{ ultimo.referencia }}{% endif %}
+                        {% if ultimo.latitud is not None %}
+                            · <a class="enlace-mapa" href="https://www.google.com/maps?q={{ ultimo.latitud|unlocalize }},{{ ultimo.longitud|unlocalize }}" target="_blank">Ver ubicación ↗</a>
+                        {% endif %}
+                    </p>
+                {% else %}
+                    <p>Aún no te has reportado.</p>
+                {% endif %}
+            </div>
+            <script>
+                var aviso = document.getElementById("aviso-gps");
+                if ("geolocation" in navigator) {
+                    aviso.textContent = "Buscando tu ubicación...";
+                    navigator.geolocation.getCurrentPosition(
+                        function (posicion) {
+                            document.getElementById("id_latitud").value = posicion.coords.latitude;
+                            document.getElementById("id_longitud").value = posicion.coords.longitude;
+                            aviso.textContent = "📍 Tu ubicación se adjuntará al reporte.";
+                        },
+                        function () {
+                            aviso.textContent = "No pudimos obtener tu ubicación. Escribe dónde estás.";
+                        },
+                        { enableHighAccuracy: true, timeout: 10000 }
+                    );
+                } else {
+                    aviso.textContent = "Tu navegador no comparte la ubicación. Escribe dónde estás.";
+                }
+            </script>
+        {% else %}
+            <p>Todavía no estás en ningún núcleo. <a class="enlace-mapa" href="{% url 'nucleos' %}">Crea uno o únete con un código</a>.</p>
+        {% endif %}
+    </div>
+
+    {% if seleccionado %}
+        {% if evento %}
+            <div class="tarjeta tarjeta-tabla">
+                <table class="tabla-integrantes">
+                    <thead>
+                        <tr><th>Integrante</th><th>Estado</th><th>Hora</th><th>Ubicación</th></tr>
+                    </thead>
+                    <tbody>
+                        {% spaceless %}
+                        {% for fila in filas %}
+                            <tr>
+                                <td data-label="Integrante">
+                                    <strong>{{ fila.usuario.first_name|default:fila.usuario.username }}</strong>
+                                    {% if fila.usuario == user %}
+                                        <span class="suave">Tú</span>
+                                    {% elif fila.reporte.referencia %}
+                                        <span class="suave">{{ fila.reporte.referencia }}</span>
+                                    {% endif %}
+                                    {% if fila.reporte.detalle %}
+                                        <span class="suave">{{ fila.reporte.detalle }}</span>
+                                    {% endif %}
+                                </td>
+                                <td data-label="Estado">
+                                    {% if fila.estado == "AYUDA" %}
+                                        <span class="estado estado-ayuda">⚠ Necesito ayuda</span>
+                                    {% elif fila.estado == "BIEN" %}
+                                        <span class="estado estado-bien">✓ Estoy bien</span>
+                                    {% else %}
+                                        <span class="estado estado-no">○ No se ha reportado</span>
+                                    {% endif %}
+                                </td>
+                                <td data-label="Hora">{% if fila.reporte %}{{ fila.reporte.fecha_hora|date:"H:i" }}{% else %}—{% endif %}</td>
+                                <td data-label="Ubicación">
+                                    {% if fila.reporte and fila.reporte.latitud is not None %}
+                                        <a class="enlace-mapa" href="https://www.google.com/maps?q={{ fila.reporte.latitud|unlocalize }},{{ fila.reporte.longitud|unlocalize }}" target="_blank">Ver ubicación ↗</a>
+                                    {% else %}
+                                        <span class="suave">Sin datos</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        {% endspaceless %}
+                    </tbody>
+                </table>
+                <p class="suave aviso-evento">Emergencia activa desde el {{ evento.fecha_inicio|date:"d/m H:i" }}.</p>
+            </div>
+        {% else %}
+            <div class="tarjeta">
+                <p>No hay una emergencia activa en este núcleo. Cuando alguien se reporte, se abrirá una por 72 horas.</p>
+                <p class="etiqueta">Integrantes ({{ seleccionado.membresia_set.count }})</p>
+                <ul class="lista-integrantes">
+                    {% for membresia in seleccionado.membresia_set.all %}
+                        {% with nombre=membresia.usuario.first_name|default:membresia.usuario.username %}
+                            <li>
+                                <span class="circulo">{{ nombre|first|upper }}</span>
+                                <div>
+                                    <strong>{{ nombre }}</strong>
+                                    {% if membresia.usuario == user or membresia.rol == "creador" %}
+                                        <span class="suave">{% if membresia.usuario == user %}Tú{% endif %}{% if membresia.usuario == user and membresia.rol == "creador" %} · {% endif %}{% if membresia.rol == "creador" %}Creó el núcleo{% endif %}</span>
+                                    {% endif %}
+                                </div>
+                            </li>
+                        {% endwith %}
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+    {% endif %}
+</div>
+{% endblock %}

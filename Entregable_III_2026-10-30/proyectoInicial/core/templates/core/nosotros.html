@@ -1,0 +1,49 @@
+{% extends "core/base.html" %}
+{% load static %}
+{% block contenido %}
+<div class="columnas nosotros">
+<section>
+<p class="etiqueta naranjo">Nosotros</p>
+<h1>Somos el Equipo 12</h1>
+<p class="suave">Estudiantes de IWG400 Proyecto Inicial en la USM. Creamos Repórtate ya porque, después de un terremoto, la pregunta más urgente es la más simple: ¿están todos bien?</p>
+
+<img class="foto-equipo" src="{% static 'core/equipo.jpg' %}" alt="El Equipo 12 de IWG400" loading="lazy">
+
+<ul class="equipo">
+<li>
+<span class="iniciales">SS</span>
+<div><strong>Sofia Sepúlveda Canales</strong><span class="suave">Líder del equipo</span></div>
+</li>
+<li>
+<span class="iniciales">AS</span>
+<div><strong>Alexis Soto</strong><span class="suave">Publicación y demostración</span></div>
+</li>
+<li>
+<span class="iniciales">JT</span>
+<div><strong>Jorge Troncoso</strong><span class="suave">Base de datos e informe</span></div>
+</li>
+<li>
+<span class="iniciales">BT</span>
+<div><strong>Benjamin Troncoso</strong><span class="suave">Pruebas técnicas</span></div>
+</li>
+<li>
+<span class="iniciales">MT</span>
+<div><strong>Mauricio Tolmo</strong><span class="suave">Núcleos y pruebas con usuarios</span></div>
+</li>
+</ul>
+</section>
+
+<section class="tarjeta contacto">
+<h2>Contáctanos</h2>
+<p class="suave">¿Dudas o sugerencias sobre el proyecto? Escríbenos.</p>
+<!-- CAMBIAR: el correo del equipo -->
+<div class="fila-contacto">
+<a class="boton" href="mailto:equipo12@ejemplo.cl">Escribir un correo</a>
+<span class="suave correo">
+<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+equipo12@ejemplo.cl
+</span>
+</div>
+</section>
+</div>
+{% endblock %}

@@ -1,0 +1,112 @@
+{% extends "core/base.html" %}
+
+{% block contenido %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+
+<div class="tarjeta tarjeta-mapa">
+    <nav class="pestanas">
+        {% for nucleo in nucleos %}
+            <a href="?nucleo={{ nucleo.id }}" class="{% if nucleo == seleccionado %}activa{% endif %}">{{ nucleo.nombre }}</a>
+        {% endfor %}
+    </nav>
+    <h1>Mapa de {{ seleccionado.nombre }}</h1>
+    <p class="suave"><a class="enlace-mapa" href="{% url 'panel' %}?nucleo={{ seleccionado.id }}">Volver al panel</a> · <a class="enlace-mapa" href="?nucleo={{ seleccionado.id }}">Actualizar</a></p>
+
+    {% if not evento %}
+        <p>No hay una emergencia activa en este núcleo, así que no hay ubicaciones que mostrar.</p>
+    {% else %}
+        {% if puntos %}
+            <!-- CAMBIAR: la explicación del mapa -->
+            <p class="suave">Cada punto es la última ubicación que compartió cada integrante desde que empezó la emergencia. Toca un punto para ver la hora de su reporte.</p>
+                        <div id="mapa" class="mapa-leaflet" style="height: 380px;"></div>
+            <p id="mapa-error" class="suave" hidden>No se pudo cargar el mapa, probablemente por la señal. Abajo puedes abrir la ubicación de cada integrante en Google Maps.</p>
+
+            {{ puntos|json_script:"puntos-mapa" }}
+            <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+            <script>
+                function dibujarMapa() {
+                    var contenedor = document.getElementById("mapa");
+                    if (typeof L === "undefined") {
+                        contenedor.hidden = true;
+                        document.getElementById("mapa-error").hidden = false;
+                        return;
+                    }
+
+                    var puntos = JSON.parse(document.getElementById("puntos-mapa").textContent);
+                    var mapa = L.map(contenedor);
+                                        L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+                        maxZoom: 19,
+                        referrerPolicy: "strict-origin-when-cross-origin",
+                        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                    }).addTo(mapa);
+
+                    var lugares = [];
+                    puntos.forEach(function (punto) {
+                        var ayuda = punto.estado === "AYUDA";
+                        var marcador = L.circleMarker([punto.lat, punto.lng], {
+                            radius: 10,
+                            color: "#ffffff",
+                            weight: 3,
+                            fillColor: ayuda ? "#c4410c" : "#17594a",
+                            fillOpacity: 1
+                        }).addTo(mapa);
+
+                        var nombre = document.createElement("span");
+                        nombre.textContent = punto.nombre;
+                        marcador.bindTooltip(nombre, { permanent: true, direction: "top", offset: [0, -10] });
+
+                        var globo = document.createElement("div");
+                        var titulo = document.createElement("strong");
+                        titulo.textContent = punto.nombre;
+                        var detalle = document.createElement("p");
+                        detalle.textContent = (ayuda ? "⚠ Necesito ayuda" : "✓ Estoy bien") + ", a las " + punto.hora;
+                        var enlace = document.createElement("a");
+                        enlace.href = punto.enlace;
+                        enlace.target = "_blank";
+                        enlace.textContent = "Abrir en Google Maps";
+                        globo.append(titulo, detalle, enlace);
+                        marcador.bindPopup(globo);
+
+                        lugares.push([punto.lat, punto.lng]);
+                    });
+
+                    if (lugares.length === 1) {
+                        mapa.setView(lugares[0], 16);
+                    } else {
+                        mapa.fitBounds(lugares, { padding: [40, 40], maxZoom: 17 });
+                    }
+                }
+
+                dibujarMapa();
+            </script>
+        {% else %}
+            <p>Nadie ha compartido su ubicación desde que empezó la emergencia.</p>
+        {% endif %}
+
+        <ul class="integrantes">
+            {% for fila in filas %}
+                <li class="integrante">
+                    <div>
+                        <strong>{{ fila.usuario.first_name|default:fila.usuario.username }}</strong>{% if fila.usuario == user %} (tú){% endif %}
+                        {% if fila.enlace %}
+                            <span class="suave">{{ fila.distancia|default:"Ubicación compartida" }}</span>
+                            <a class="enlace-mapa" href="{{ fila.enlace }}" target="_blank">Ver en Google Maps ↗</a>
+                        {% elif fila.reporte %}
+                            <span class="suave">Sin ubicación{% if fila.reporte.referencia %}: {{ fila.reporte.referencia }}{% endif %}</span>
+                        {% else %}
+                            <span class="suave">Sin reporte desde el inicio de la emergencia</span>
+                        {% endif %}
+                    </div>
+                    {% if fila.estado == "AYUDA" %}
+                        <span class="estado estado-ayuda">⚠ Necesito ayuda</span>
+                    {% elif fila.estado == "BIEN" %}
+                        <span class="estado estado-bien">✓ Estoy bien</span>
+                    {% else %}
+                        <span class="estado estado-no">○ No se ha reportado</span>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</div>
+{% endblock %}

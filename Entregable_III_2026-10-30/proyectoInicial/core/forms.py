@@ -1,0 +1,77 @@
+from django import forms
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
+from django.contrib.auth.models import User
+from .models import Nucleo, Reporte
+
+class RegistroForm(UserCreationForm):
+    first_name = forms.CharField(label="Nombre", max_length=150)
+    email = forms.EmailField(label="Correo")
+
+    class Meta:
+        model = User
+        fields = ["first_name", "email"]
+
+    def clean_email(self):
+        correo = self.cleaned_data["email"].lower()
+        if User.objects.filter(username=correo).exists():
+            raise forms.ValidationError("Ya existe una cuenta con este correo.")
+        return correo
+
+    def save(self, commit=True):
+        usuario = super().save(commit=False)
+        usuario.username = self.cleaned_data["email"]
+        if commit:
+            usuario.save()
+        return usuario
+class IngresoForm(AuthenticationForm):
+    username = forms.CharField(label="Correo")
+
+    error_messages = {
+        "invalid_login": "El correo o la contraseña no son correctos.",
+        "inactive": "Esta cuenta está desactivada.",
+    }
+
+    def clean_username(self):
+        return self.cleaned_data["username"].lower()
+class ReporteForm(forms.ModelForm):
+    class Meta:
+        model = Reporte
+        fields = ["estado", "detalle", "referencia", "latitud", "longitud"]
+        labels = {
+            "detalle": "Detalle (opcional)",
+            "referencia": "¿Dónde estás? (opcional si compartes tu ubicación)",
+        }
+        widgets = {
+            "detalle": forms.TextInput(attrs={"placeholder": "Ej: estoy sin batería"}),
+            "referencia": forms.TextInput(attrs={"placeholder": "Ej: en la casa, en la U"}),
+            "latitud": forms.HiddenInput(),
+            "longitud": forms.HiddenInput(),
+        }
+
+    def clean(self):
+        datos = super().clean()
+        tiene_gps = datos.get("latitud") is not None and datos.get("longitud") is not None
+        if not tiene_gps and not datos.get("referencia"):
+            self.add_error("referencia", "No pudimos obtener tu ubicación. Escribe dónde estás.")
+        return datos
+
+
+class CrearNucleoForm(forms.Form):
+    nombre = forms.CharField(
+        label="Nombre del núcleo",
+        max_length=50,
+        widget=forms.TextInput(attrs={"placeholder": "Ej: Familia, Oficina"}),
+    )
+
+class UnirseForm(forms.Form):
+    codigo = forms.CharField(
+        label="Código de invitación",
+        max_length=10,
+        widget=forms.TextInput(attrs={"placeholder": "Ej: RJS-482"}),
+    )
+
+    def clean_codigo(self):
+        codigo = self.cleaned_data["codigo"].upper().replace("-", "").replace(" ", "")
+        if not Nucleo.objects.filter(codigo_invitacion=codigo).exists():
+            raise forms.ValidationError("No encontramos un núcleo con ese código. Revisa que esté bien escrito.")
+        return codigo

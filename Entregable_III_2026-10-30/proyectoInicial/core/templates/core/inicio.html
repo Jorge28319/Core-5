@@ -1,0 +1,51 @@
+{% extends "core/base.html" %}
+
+{% block contenido %}
+<section class="portada">
+    <div>
+        <p class="pildora"><span class="punto"></span>Pensada para las horas después de un sismo</p>
+        <h1>Sabe en segundos si tu familia está bien.</h1>
+        <p class="portada-intro">Cuando las redes se saturan, avisa con un solo botón que estás a salvo y comparte tu ubicación con tu núcleo. Todo en texto simple, para que cargue incluso con señal débil.</p>
+        <div class="portada-botones">
+            <a href="{% if user.is_authenticated %}{% url 'nucleos' %}{% else %}{% url 'registro' %}{% endif %}" class="boton">Crear mi núcleo →</a>
+            <a href="{% url 'panel' %}" class="boton-borde">Ver mi panel</a>
+        </div>
+        <ul class="ventajas">
+            <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 20v-3M9 20v-7M14 20V9M19 20V4"/></svg>
+                Funciona con señal débil
+            </li>
+            <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+                Solo lo ve tu núcleo
+            </li>
+            <li>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg>
+                Ubicación como enlace simple
+            </li>
+        </ul>
+    </div>
+
+    <div class="vista-panel" aria-label="Ejemplo del panel de un núcleo">
+        <div class="vista-cabecera">
+            <div>
+                <p class="etiqueta">Panel del núcleo</p>
+                <h2>Familia Rojas</h2>
+            </div>
+            <span class="suave">Actualizado 14:41</span>
+        </div>
+        <div class="vista-fila">
+            <div><strong>Diego Rojas</strong><span class="suave">14:35 · en la oficina</span></div>
+            <span class="estado estado-ayuda">⚠ Necesito ayuda</span>
+        </div>
+        <div class="vista-fila">
+            <div><strong>Sofía Rojas</strong><span class="suave">Sin reporte</span></div>
+            <span class="estado estado-no">○ No se ha reportado</span>
+        </div>
+        <div class="vista-fila">
+            <div><strong>Ana Rojas</strong><span class="suave">14:32 · en la casa</span></div>
+            <span class="estado estado-bien">✓ Estoy bien</span>
+        </div>
+    </div>
+</section>
+{% endblock %}
