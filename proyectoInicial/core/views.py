@@ -5,6 +5,7 @@ import math
 from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
+from django.db import transaction
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 
@@ -128,6 +129,25 @@ def nucleos(request):
         "unirse_form": unirse_form,
         "mis_nucleos": mis_nucleos,
     })
+
+@login_required
+def salir_nucleo(request, nucleo_id):
+    membresia = get_object_or_404(Membresia, nucleo_id=nucleo_id, usuario=request.user)
+    nucleo = membresia.nucleo
+    if request.method == "POST":
+        with transaction.atomic():
+            membresia.delete()
+            siguiente = Membresia.objects.filter(nucleo=nucleo).order_by("fecha_union", "id").first()
+            if siguiente is None:
+                nucleo.delete()
+            elif nucleo.creador == request.user:
+                siguiente.rol = "creador"
+                siguiente.save()
+                nucleo.creador = siguiente.usuario
+                nucleo.save()
+        messages.success(request, f"Saliste de {nucleo.nombre}.")
+        return redirect("nucleos")
+    return render(request, "core/salir_nucleo.html", {"nucleo": nucleo})
 
 def nosotros(request):
     return render(request, "core/nosotros.html")
