@@ -1,0 +1,13 @@
+{% extends "core/base.html" %}
+
+{% block contenido %}
+<div class="tarjeta">
+    <h1>Salir del núcleo</h1>
+    <p>¿Seguro que quieres salir de {{ nucleo.nombre }}? Ya no verás el estado de sus integrantes ni ellos el tuyo. Podrás volver a unirte con el código.</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="boton">Sí, salir</button>
+    </form>
+    <p><a href="{% url 'nucleos' %}">Cancelar</a></p>
+</div>
+{% endblock %}
