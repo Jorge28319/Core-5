@@ -25,7 +25,9 @@ body {
 h1,
 h2,
 .logo {
-    font-family: Verdana, "DejaVu Sans", sans-serif;
+    font-family: system-ui, "Segoe UI", Roboto, sans-serif;
+    font-weight: 800;
+    letter-spacing: -0.02em;
     color: var(--marca);
 }
 
@@ -53,7 +55,6 @@ a {
     display: flex;
     align-items: center;
     gap: 8px;
-    font-weight: bold;
 }
 
 .logo-icono {
@@ -472,4 +473,137 @@ button {
 .leaflet-popup-content a {
     color: var(--marca);
     font-weight: bold;
+}
+
+/* Portada */
+
+.portada {
+    display: grid;
+    gap: 32px;
+    padding: 8px 0 32px;
+}
+
+.pildora {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: var(--fondo-suave);
+    color: var(--texto-suave);
+    font-size: 14px;
+}
+
+.punto {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--acento);
+}
+
+.portada h1 {
+    margin: 20px 0 16px;
+    font-size: 40px;
+    line-height: 1.1;
+}
+
+.portada-intro {
+    max-width: 34em;
+    margin: 0;
+    color: var(--texto-suave);
+}
+
+.portada-botones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 28px 0;
+}
+
+.portada-botones .boton,
+.portada-botones .boton-borde {
+    padding: 14px 22px;
+    border-radius: 10px;
+    font-size: 16px;
+}
+
+.ventajas {
+    display: grid;
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    color: var(--texto-suave);
+    font-size: 14px;
+}
+
+.ventajas li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.ventajas svg {
+    flex-shrink: 0;
+}
+
+.vista-panel {
+    padding: 24px;
+    border: 1px solid var(--borde);
+    border-radius: 20px;
+    background: var(--fondo-suave);
+}
+
+.vista-cabecera {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.vista-cabecera h2 {
+    margin: 4px 0 0;
+    font-size: 22px;
+}
+
+.vista-cabecera .suave {
+    font-size: 14px;
+}
+
+.vista-fila {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px 12px;
+    margin-top: 10px;
+    padding: 14px 16px;
+    border: 1px solid var(--borde);
+    border-radius: 12px;
+    background: #ffffff;
+}
+
+.vista-fila .suave {
+    display: block;
+    font-size: 14px;
+}
+
+@media (min-width: 800px) {
+    .portada {
+        grid-template-columns: 1.1fr 1fr;
+        align-items: center;
+        gap: 48px;
+        padding: 48px 0;
+    }
+
+    .portada h1 {
+        font-size: 56px;
+    }
+
+    .ventajas {
+        grid-template-columns: repeat(3, 1fr);
+    }
 }
