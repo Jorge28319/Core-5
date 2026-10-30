@@ -200,3 +200,28 @@ def mapa(request):
         seleccionado = get_object_or_404(nucleos, id=nucleo_id)
     else:
         seleccionado = nucleos.first()
+    evento, filas = estados_del_nucleo(seleccionado)
+
+    propio = None
+    for fila in filas:
+        reporte = fila["reporte"]
+        fila["enlace"] = ""
+        fila["distancia"] = ""
+        if reporte and reporte.latitud is not None:
+            fila["enlace"] = enlace_mapa(reporte.latitud, reporte.longitud)
+            if fila["usuario"] == request.user:
+                propio = reporte
+    if propio:
+        for fila in filas:
+            reporte = fila["reporte"]
+            if fila["enlace"] and fila["usuario"] != request.user:
+                km = distancia_km(propio.latitud, propio.longitud, reporte.latitud, reporte.longitud)
+                fila["distancia"] = f"A {texto_distancia(km)} de ti"
+
+    return render(request, "core/mapa.html", {
+        "nucleos": nucleos,
+        "seleccionado": seleccionado,
+        "evento": evento,
+        "filas": filas,
+        "puntos": puntos_mapa(filas),
+    })
