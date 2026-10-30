@@ -2,12 +2,20 @@
 
 {% block contenido %}
 <p class="etiqueta naranjo">Prepárate antes de la emergencia</p>
-<h1>Núcleos</h1>
+<h1>Tus núcleos</h1>
 <p class="suave">Crea un núcleo una sola vez y comparte su código. Cuando ocurra un sismo, cada integrante solo tendrá que reportarse.</p>
 
 <div class="columnas">
     <div class="tarjeta">
-        <h2>Crear un núcleo</h2>
+        <div class="tarjeta-titulo">
+            <span class="icono-cuadro">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+            </span>
+            <div>
+                <h2>Crear un núcleo</h2>
+                <p class="suave">Para quien organiza a su familia u oficina</p>
+            </div>
+        </div>
         <form method="post">
             {% csrf_token %}
             {{ crear_form.as_p }}
@@ -15,7 +23,15 @@
         </form>
     </div>
     <div class="tarjeta">
-        <h2>Unirme a un núcleo</h2>
+        <div class="tarjeta-titulo">
+            <span class="icono-cuadro">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 0 0-7.07-7.07l-1.5 1.5"/><path d="M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 0 0 7.07 7.07l1.5-1.5"/></svg>
+            </span>
+            <div>
+                <h2>Unirme a un núcleo</h2>
+                <p class="suave">Si alguien ya lo creó</p>
+            </div>
+        </div>
         <form method="post">
             {% csrf_token %}
             {{ unirse_form.as_p }}
@@ -24,14 +40,26 @@
     </div>
 </div>
 
-<h2>Tus núcleos</h2>
+<h2 class="titulo-seccion">Núcleos en los que estás</h2>
 <div class="columnas">
     {% for nucleo in mis_nucleos %}
         <div class="tarjeta">
             <h2>{{ nucleo.nombre }}</h2>
-            <p class="etiqueta">Código de invitación</p>
-            <p class="codigo">{{ nucleo.codigo_invitacion|slice:":3" }}-{{ nucleo.codigo_invitacion|slice:"3:" }}</p>
-            <p class="suave">Integrantes: {% for membresia in nucleo.membresia_set.all %}{{ membresia.usuario.first_name|default:membresia.usuario.username }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+            <div class="caja-codigo">
+                <p class="etiqueta">Código de invitación</p>
+                <p class="codigo">{{ nucleo.codigo_invitacion|slice:":3" }}-{{ nucleo.codigo_invitacion|slice:"3:" }}</p>
+            </div>
+            <p class="suave">Compártelo solo con tu núcleo. Nadie fuera de él podrá ver sus reportes ni ubicaciones.</p>
+            <div class="fila-integrantes">
+                <span class="suave">Ya están en {{ nucleo.nombre }}</span>
+                <div class="circulos">
+                    {% for membresia in nucleo.membresia_set.all %}
+                        {% with nombre=membresia.usuario.first_name|default:membresia.usuario.username %}
+                            <span class="circulo" title="{{ nombre }}">{{ nombre|first|upper }}</span>
+                        {% endwith %}
+                    {% endfor %}
+                </div>
+            </div>
             <p><a href="{% url 'salir_nucleo' nucleo.id %}" class="boton-borde">Salir del núcleo</a></p>
         </div>
     {% empty %}

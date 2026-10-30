@@ -19,7 +19,9 @@
             </nav>
             <div class="cuenta">
                 {% if user.is_authenticated %}
-                    <span>{{ user.first_name|default:user.username }}</span>
+                    {% with nombre=user.first_name|default:user.username %}
+                        <span class="persona"><span class="circulo">{{ nombre|first|upper }}</span>{{ nombre }}</span>
+                    {% endwith %}
                     <form method="post" action="{% url 'logout' %}">
                         {% csrf_token %}
                         <button type="submit" class="enlace">Salir</button>
@@ -37,13 +39,21 @@
         {% endfor %}
         {% block contenido %}{% endblock %}
     </main>
-    <footer	class="pie">
+    <footer class="pie">
         <div class="pie-contenido">
-            <!--	CAMBIAR:	la	frase	del	pie	de	página	-->
-            	<p><strong>Repórtate ya.</strong> Hecha	para funcionar cuando la señal	es mínima.</p>
-                <p>En una emergencia llama al <a href="tel:131">131</a>	(Ambulancia), <a href="tel:132">132</a>	(Bomberos)	o <a href="tel:133">133</a>	(Carabineros).</p>
-                <!--	CAMBIAR:	los	créditos	-->
-            	<p	class="suave">2026,	Equipo 12, IWG400 Proyecto Inicial,	USM.</p>
+            <div class="pie-fila">
+                <p class="pie-marca"><a href="/" class="logo"><span class="logo-icono">✓</span> Repórtate ya</a> <span class="suave">Hecha para funcionar cuando la señal es mínima.</span></p>
+                <nav class="pie-menu">
+                    <a href="/">Inicio</a>
+                    <a href="{% url 'panel' %}">Panel</a>
+                    <a href="{% url 'nucleos' %}">Núcleos</a>
+                    <a href="{% url 'nosotros' %}">Nosotros</a>
+                </nav>
+            </div>
+            <div class="pie-fila pie-abajo">
+                <p>En una emergencia llama al <a class="telefono" href="tel:131">131</a> Ambulancia · <a class="telefono" href="tel:132">132</a> Bomberos · <a class="telefono" href="tel:133">133</a> Carabineros</p>
+                <p>© 2026 Equipo 12 · IWG400 Proyecto Inicial</p>
+            </div>
         </div>
     </footer>
 </body>

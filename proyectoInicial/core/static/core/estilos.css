@@ -352,10 +352,52 @@ button {
     margin: 4px 0;
 }
 
-.pie a {
+.pie-fila {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px 24px;
+}
+
+.pie-marca {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 14px;
+}
+
+.pie-marca .logo-icono {
+    width: 28px;
+    height: 28px;
+    font-size: 15px;
+}
+
+.pie-menu {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    color: var(--texto-suave);
+}
+
+.pie-abajo {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--borde);
+    color: var(--texto-suave);
+    font-size: 14px;
+}
+
+.pie .telefono {
     color: var(--marca);
     font-weight: bold;
     text-decoration: underline;
+}
+
+.persona {
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 /* Nosotros */
@@ -426,9 +468,9 @@ button {
     font-size: 14px;
 }
 
-.cabecera-nucleo h2 {
+.cabecera-nucleo h1 {
     margin: 0;
-    font-size: 28px;
+    font-size: 32px;
 }
 
 .acciones-nucleo {
@@ -606,4 +648,232 @@ button {
     .ventajas {
         grid-template-columns: repeat(3, 1fr);
     }
+}
+
+/* Núcleos */
+
+.tarjeta-titulo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.tarjeta-titulo h2 {
+    margin: 0;
+}
+
+.tarjeta-titulo .suave {
+    margin: 0;
+    font-size: 14px;
+}
+
+.icono-cuadro {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: var(--fondo-suave);
+    color: var(--marca);
+}
+
+.titulo-seccion {
+    margin-top: 40px;
+}
+
+.caja-codigo {
+    padding: 14px 18px;
+    border-radius: 12px;
+    background: var(--fondo-suave);
+}
+
+.caja-codigo .codigo {
+    margin: 4px 0 0;
+    color: var(--marca);
+}
+
+.fila-integrantes {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    padding-top: 14px;
+    border-top: 1px solid var(--borde);
+}
+
+.circulos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.circulo {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--claro);
+    color: var(--marca);
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* Tabla de integrantes del panel: en celular cada fila es una tarjeta */
+
+.tarjeta-tabla {
+    padding: 0;
+    overflow: hidden;
+}
+
+.tabla-integrantes {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 16px;
+}
+
+.tabla-integrantes thead {
+    display: none;
+}
+
+.tabla-integrantes tr {
+    display: block;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--borde);
+}
+
+.tabla-integrantes td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 4px 0;
+}
+
+.tabla-integrantes td::before {
+    content: attr(data-label);
+    color: var(--texto-suave);
+    font-size: 14px;
+}
+
+.tabla-integrantes td:first-child {
+    display: block;
+    padding-bottom: 8px;
+}
+
+.tabla-integrantes td:first-child::before {
+    content: none;
+}
+
+.tabla-integrantes .suave {
+    display: block;
+    font-size: 14px;
+}
+
+.aviso-evento {
+    margin: 0;
+    padding: 12px 20px;
+    font-size: 14px;
+}
+
+@media (min-width: 1000px) {
+    .tabla-integrantes thead {
+        display: table-header-group;
+    }
+
+    .tabla-integrantes tr {
+        display: table-row;
+    }
+
+    .tabla-integrantes th {
+        padding: 12px 16px;
+        background: var(--fondo-suave);
+        color: var(--texto-suave);
+        font-size: 13px;
+        text-align: left;
+        text-transform: uppercase;
+    }
+
+    .tabla-integrantes td,
+    .tabla-integrantes td:first-child {
+        display: table-cell;
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--borde);
+        vertical-align: middle;
+    }
+
+    .tabla-integrantes td::before {
+        content: none;
+    }
+}
+
+/* Nosotros con el diseño del prototipo */
+
+.nosotros {
+    gap: 32px;
+    align-items: start;
+}
+
+.nosotros h1 {
+    margin: 8px 0 12px;
+    font-size: 40px;
+    line-height: 1.1;
+}
+
+.fila-contacto {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.contacto .fila-contacto .boton {
+    width: auto;
+    padding: 12px 20px;
+}
+
+.correo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+@media (min-width: 800px) {
+    .nosotros {
+        grid-template-columns: 1.1fr 1fr;
+        gap: 48px;
+        padding-top: 24px;
+    }
+
+    .nosotros h1 {
+        font-size: 48px;
+    }
+}
+
+/* Integrantes del panel cuando no hay emergencia */
+
+.lista-integrantes {
+    margin: 8px 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.lista-integrantes li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-top: 1px solid var(--borde);
+}
+
+.lista-integrantes .suave {
+    display: block;
+    font-size: 14px;
 }
