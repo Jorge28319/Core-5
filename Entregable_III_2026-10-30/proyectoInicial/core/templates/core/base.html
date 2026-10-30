@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Repórtate ya</title>
+    <link rel="stylesheet" href="{% static 'core/estilos.css' %}">
+</head>
+<body>
+    <header class="barra">
+        <div class="barra-contenido">
+            <a href="/" class="logo"><span class="logo-icono">✓</span> Repórtate ya</a>
+            <nav class="menu">
+                <a href="/">Inicio</a>
+                <a href="{% url 'panel' %}">Panel</a>
+                <a href="{% url 'nucleos' %}">Núcleos</a>
+                <a href="{% url 'nosotros' %}">Nosotros</a>
+            </nav>
+            <div class="cuenta">
+                {% if user.is_authenticated %}
+                    {% with nombre=user.first_name|default:user.username %}
+                        <span class="persona"><span class="circulo">{{ nombre|first|upper }}</span>{{ nombre }}</span>
+                    {% endwith %}
+                    <form method="post" action="{% url 'logout' %}">
+                        {% csrf_token %}
+                        <button type="submit" class="enlace">Salir</button>
+                    </form>
+                {% else %}
+                    <a href="{% url 'login' %}">Iniciar sesión</a>
+                    <a href="{% url 'registro' %}" class="boton">Crear cuenta</a>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+    <main>
+        {% for mensaje in messages %}
+            <p class="mensaje">{{ mensaje }}</p>
+        {% endfor %}
+        {% block contenido %}{% endblock %}
+    </main>
+    <footer class="pie">
+        <div class="pie-contenido">
+            <div class="pie-fila">
+                <p class="pie-marca"><a href="/" class="logo"><span class="logo-icono">✓</span> Repórtate ya</a> <span class="suave">Hecha para funcionar cuando la señal es mínima.</span></p>
+                <nav class="pie-menu">
+                    <a href="/">Inicio</a>
+                    <a href="{% url 'panel' %}">Panel</a>
+                    <a href="{% url 'nucleos' %}">Núcleos</a>
+                    <a href="{% url 'nosotros' %}">Nosotros</a>
+                </nav>
+            </div>
+            <div class="pie-fila pie-abajo">
+                <p>En una emergencia llama al <a class="telefono" href="tel:131">131</a> Ambulancia · <a class="telefono" href="tel:132">132</a> Bomberos · <a class="telefono" href="tel:133">133</a> Carabineros</p>
+                <p>© 2026 Equipo 12 · IWG400 Proyecto Inicial</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

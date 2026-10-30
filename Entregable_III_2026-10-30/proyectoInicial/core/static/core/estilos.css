@@ -1,0 +1,879 @@
+:root {
+    --marca: #272757;
+    --acento: #505081;
+    --claro: #d6d6ea;
+    --lavanda: #8686ac;
+    --verde: #17594a;
+    --verde-claro: #e3f1ec;
+    --naranjo: #c4410c;
+    --naranjo-claro: #fde6dc;
+    --texto: #0f0e47;
+    --texto-suave: #505081;
+    --borde: #d6d6ea;
+    --fondo-suave: #f0f0f6;
+}
+
+body {
+    margin: 0;
+    font-family: system-ui, sans-serif;
+    font-size: 18px;
+    line-height: 1.5;
+    color: var(--texto);
+    background: #ffffff;
+}
+
+h1,
+h2,
+.logo {
+    font-family: system-ui, "Segoe UI", Roboto, sans-serif;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--marca);
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.barra {
+    border-bottom: 1px solid var(--borde);
+}
+
+.barra-contenido {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 12px 16px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.logo-icono {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 8px;
+    background: var(--marca);
+    color: #ffffff;
+}
+
+.menu {
+    order: 3;
+    width: 100%;
+    display: flex;
+    gap: 20px;
+    font-size: 16px;
+    color: var(--texto-suave);
+}
+
+.cuenta {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 16px;
+}
+
+.boton {
+    display: inline-block;
+    padding: 8px 16px;
+    border-radius: 8px;
+    background: var(--marca);
+    color: #ffffff;
+    font-weight: bold;
+}
+
+main {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 24px 16px;
+}
+
+@media (min-width: 800px) {
+    .menu {
+        order: 0;
+        width: auto;
+    }
+}
+
+.tarjeta {
+    max-width: 420px;
+    margin: 24px auto;
+    padding: 24px;
+    border: 1px solid var(--borde);
+    border-radius: 16px;
+}
+
+.tarjeta h1 {
+    margin-top: 0;
+    font-size: 28px;
+}
+
+label {
+    display: block;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 10px 12px;
+    font-size: 16px;
+    border: 1px solid var(--borde);
+    border-radius: 8px;
+}
+
+button {
+    border: none;
+    font-family: inherit;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.tarjeta .boton {
+    width: 100%;
+    padding: 12px;
+}
+
+.enlace {
+    background: none;
+    padding: 0;
+    color: inherit;
+}
+
+.cuenta form {
+    margin: 0;
+}
+
+.errorlist {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    color: var(--naranjo);
+    font-size: 16px;
+}
+
+.helptext {
+    font-size: 14px;
+    color: var(--texto-suave);
+}
+
+.suave {
+    color: var(--texto-suave);
+    font-size: 16px;
+}
+
+.boton-estado {
+    display: block;
+    width: 100%;
+    margin-top: 12px;
+    padding: 16px;
+    border-radius: 12px;
+    color: #ffffff;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.bien {
+    background: var(--verde);
+}
+
+.ayuda {
+    background: var(--naranjo);
+}
+
+.ultimo {
+    margin-top: 20px;
+    padding-top: 12px;
+    border-top: 1px solid var(--borde);
+}
+
+.etiqueta {
+    margin: 0;
+    font-size: 13px;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: var(--texto-suave);
+}
+
+.columnas {
+    display: grid;
+    gap: 16px;
+}
+
+@media (min-width: 800px) {
+    .columnas {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.columnas .tarjeta {
+    max-width: none;
+    margin: 0;
+}
+
+.tarjeta h2 {
+    margin-top: 0;
+    font-size: 22px;
+}
+
+.codigo {
+    margin: 4px 0 12px;
+    font-family: ui-monospace, monospace;
+    font-size: 32px;
+    font-weight: bold;
+    letter-spacing: 4px;
+    color: var(--acento);
+}
+
+.mensaje {
+    padding: 12px 16px;
+    border-radius: 8px;
+    background: var(--claro);
+    color: var(--marca);
+}
+
+.naranjo {
+    color: var(--naranjo);
+}
+
+.enlace-mapa {
+    color: var(--marca);
+    font-weight: bold;
+}
+
+.panel {
+    display: grid;
+    gap: 16px;
+    align-items: start;
+}
+
+@media (min-width: 800px) {
+    .panel {
+        grid-template-columns: 380px 1fr;
+    }
+}
+
+.panel .tarjeta {
+    max-width: none;
+    margin: 0;
+}
+
+.pestanas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.pestanas a {
+    padding: 6px 14px;
+    border: 1px solid var(--borde);
+    border-radius: 999px;
+    font-size: 16px;
+}
+
+.pestanas a.activa {
+    background: var(--marca);
+    border-color: var(--marca);
+    color: #ffffff;
+}
+
+.integrantes {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.integrante {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    border-top: 1px solid var(--borde);
+}
+
+.integrante .suave {
+    display: block;
+}
+
+.estado {
+    flex-shrink: 0;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.estado-bien {
+    background: var(--verde-claro);
+    color: var(--verde);
+}
+
+.estado-ayuda {
+    background: var(--naranjo-claro);
+    color: var(--naranjo);
+}
+
+.estado-no {
+    background: var(--claro);
+    color: var(--texto);
+}
+
+/* Pie de página */
+
+.pie {
+    margin-top: 48px;
+    border-top: 1px solid var(--borde);
+    background: var(--fondo-suave);
+}
+
+.pie-contenido {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 20px 16px;
+    font-size: 15px;
+}
+
+.pie p {
+    margin: 4px 0;
+}
+
+.pie-fila {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px 24px;
+}
+
+.pie-marca {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 14px;
+}
+
+.pie-marca .logo-icono {
+    width: 28px;
+    height: 28px;
+    font-size: 15px;
+}
+
+.pie-menu {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    color: var(--texto-suave);
+}
+
+.pie-abajo {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--borde);
+    color: var(--texto-suave);
+    font-size: 14px;
+}
+
+.pie .telefono {
+    color: var(--marca);
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.persona {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Nosotros */
+
+.foto-equipo {
+    display: block;
+    width: 100%;
+    height: auto;
+    margin: 20px 0;
+    border-radius: 16px;
+}
+
+.equipo {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 14px;
+}
+
+@media (min-width: 800px) {
+    .equipo {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.equipo li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.equipo .suave {
+    display: block;
+}
+
+.iniciales {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--claro);
+    color: var(--marca);
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.contacto {
+    align-self: start;
+}
+
+/* Cabecera del núcleo en el panel */
+
+.cabecera-nucleo {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.cabecera-nucleo p {
+    margin: 0 0 4px;
+    font-size: 14px;
+}
+
+.cabecera-nucleo h1 {
+    margin: 0;
+    font-size: 32px;
+}
+
+.acciones-nucleo {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+}
+
+.boton-borde {
+    padding: 8px 14px;
+    border: 1px solid var(--borde);
+    border-radius: 8px;
+    background: #ffffff;
+    color: var(--marca);
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.boton-borde:hover {
+    background: var(--fondo-suave);
+}
+
+/* Mapa */
+
+.tarjeta-mapa {
+    max-width: 640px;
+}
+
+.mapa-leaflet {
+    height: 380px;
+    margin: 12px 0 16px;
+    border: 1px solid var(--borde);
+    border-radius: 12px;
+}
+
+.leaflet-tooltip {
+    font-family: system-ui, sans-serif;
+    font-weight: bold;
+}
+
+.leaflet-popup-content a {
+    color: var(--marca);
+    font-weight: bold;
+}
+
+/* Portada */
+
+.portada {
+    display: grid;
+    gap: 32px;
+    padding: 8px 0 32px;
+}
+
+.pildora {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: var(--fondo-suave);
+    color: var(--texto-suave);
+    font-size: 14px;
+}
+
+.punto {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--acento);
+}
+
+.portada h1 {
+    margin: 20px 0 16px;
+    font-size: 40px;
+    line-height: 1.1;
+}
+
+.portada-intro {
+    max-width: 34em;
+    margin: 0;
+    color: var(--texto-suave);
+}
+
+.portada-botones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 28px 0;
+}
+
+.portada-botones .boton,
+.portada-botones .boton-borde {
+    padding: 14px 22px;
+    border-radius: 10px;
+    font-size: 16px;
+}
+
+.ventajas {
+    display: grid;
+    gap: 12px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    color: var(--texto-suave);
+    font-size: 14px;
+}
+
+.ventajas li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.ventajas svg {
+    flex-shrink: 0;
+}
+
+.vista-panel {
+    padding: 24px;
+    border: 1px solid var(--borde);
+    border-radius: 20px;
+    background: var(--fondo-suave);
+}
+
+.vista-cabecera {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.vista-cabecera h2 {
+    margin: 4px 0 0;
+    font-size: 22px;
+}
+
+.vista-cabecera .suave {
+    font-size: 14px;
+}
+
+.vista-fila {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px 12px;
+    margin-top: 10px;
+    padding: 14px 16px;
+    border: 1px solid var(--borde);
+    border-radius: 12px;
+    background: #ffffff;
+}
+
+.vista-fila .suave {
+    display: block;
+    font-size: 14px;
+}
+
+@media (min-width: 800px) {
+    .portada {
+        grid-template-columns: 1.1fr 1fr;
+        align-items: center;
+        gap: 48px;
+        padding: 48px 0;
+    }
+
+    .portada h1 {
+        font-size: 56px;
+    }
+
+    .ventajas {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Núcleos */
+
+.tarjeta-titulo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.tarjeta-titulo h2 {
+    margin: 0;
+}
+
+.tarjeta-titulo .suave {
+    margin: 0;
+    font-size: 14px;
+}
+
+.icono-cuadro {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: var(--fondo-suave);
+    color: var(--marca);
+}
+
+.titulo-seccion {
+    margin-top: 40px;
+}
+
+.caja-codigo {
+    padding: 14px 18px;
+    border-radius: 12px;
+    background: var(--fondo-suave);
+}
+
+.caja-codigo .codigo {
+    margin: 4px 0 0;
+    color: var(--marca);
+}
+
+.fila-integrantes {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    padding-top: 14px;
+    border-top: 1px solid var(--borde);
+}
+
+.circulos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.circulo {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--claro);
+    color: var(--marca);
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* Tabla de integrantes del panel: en celular cada fila es una tarjeta */
+
+.tarjeta-tabla {
+    padding: 0;
+    overflow: hidden;
+}
+
+.tabla-integrantes {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 16px;
+}
+
+.tabla-integrantes thead {
+    display: none;
+}
+
+.tabla-integrantes tr {
+    display: block;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--borde);
+}
+
+.tabla-integrantes td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    padding: 4px 0;
+}
+
+.tabla-integrantes td::before {
+    content: attr(data-label);
+    color: var(--texto-suave);
+    font-size: 14px;
+}
+
+.tabla-integrantes td:first-child {
+    display: block;
+    padding-bottom: 8px;
+}
+
+.tabla-integrantes td:first-child::before {
+    content: none;
+}
+
+.tabla-integrantes .suave {
+    display: block;
+    font-size: 14px;
+}
+
+.aviso-evento {
+    margin: 0;
+    padding: 12px 20px;
+    font-size: 14px;
+}
+
+@media (min-width: 1000px) {
+    .tabla-integrantes thead {
+        display: table-header-group;
+    }
+
+    .tabla-integrantes tr {
+        display: table-row;
+    }
+
+    .tabla-integrantes th {
+        padding: 12px 16px;
+        background: var(--fondo-suave);
+        color: var(--texto-suave);
+        font-size: 13px;
+        text-align: left;
+        text-transform: uppercase;
+    }
+
+    .tabla-integrantes td,
+    .tabla-integrantes td:first-child {
+        display: table-cell;
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--borde);
+        vertical-align: middle;
+    }
+
+    .tabla-integrantes td::before {
+        content: none;
+    }
+}
+
+/* Nosotros con el diseño del prototipo */
+
+.nosotros {
+    gap: 32px;
+    align-items: start;
+}
+
+.nosotros h1 {
+    margin: 8px 0 12px;
+    font-size: 40px;
+    line-height: 1.1;
+}
+
+.fila-contacto {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.contacto .fila-contacto .boton {
+    width: auto;
+    padding: 12px 20px;
+}
+
+.correo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+@media (min-width: 800px) {
+    .nosotros {
+        grid-template-columns: 1.1fr 1fr;
+        gap: 48px;
+        padding-top: 24px;
+    }
+
+    .nosotros h1 {
+        font-size: 48px;
+    }
+}
+
+/* Integrantes del panel cuando no hay emergencia */
+
+.lista-integrantes {
+    margin: 8px 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.lista-integrantes li {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+    border-top: 1px solid var(--borde);
+}
+
+.lista-integrantes .suave {
+    display: block;
+    font-size: 14px;
+}
