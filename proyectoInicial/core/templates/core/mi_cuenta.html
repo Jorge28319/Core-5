@@ -1,0 +1,9 @@
+{% extends "core/base.html" %}
+
+{% block contenido %}
+<div class="tarjeta">
+    <h1>Mi cuenta</h1>
+    <p><strong>{{ user.first_name|default:user.username }}</strong><br><span class="suave">{{ user.email|default:user.username }}</span></p>
+    <a href="{% url 'borrar_cuenta' %}" class="boton ayuda">Borrar mi cuenta</a>
+</div>
+{% endblock %}

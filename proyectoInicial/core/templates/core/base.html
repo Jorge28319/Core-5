@@ -23,7 +23,7 @@
             <div class="cuenta">
                 {% if user.is_authenticated %}
                     {% with nombre=user.first_name|default:user.username %}
-                        <span class="persona"><span class="circulo">{{ nombre|first|upper }}</span>{{ nombre }}</span>
+                        <a href="{% url 'mi_cuenta' %}" class="persona" title="Mi cuenta"><span class="circulo">{{ nombre|first|upper }}</span>{{ nombre }}</a>
                     {% endwith %}
                     <form method="post" action="{% url 'logout' %}">
                         {% csrf_token %}

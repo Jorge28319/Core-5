@@ -850,6 +850,11 @@ button {
     font-size: 14px;
 }
 
+.tarjeta a.boton {
+    box-sizing: border-box;
+    text-align: center;
+}
+
 .barra { padding: 12px 16px; background: #ffffff; border-bottom: 1px solid #e5e7eb; }
 .logo { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; color: #1f2937; font-weight: 700; font-size: 20px; }
 .pin { width: 18px; height: 18px; background: var(--marca); border-radius: 50% 50% 50% 0; transform: rotate(-45deg); position: relative; margin: 0 2px 4px; }

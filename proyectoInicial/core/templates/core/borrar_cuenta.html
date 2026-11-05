@@ -1,0 +1,15 @@
+{% extends "core/base.html" %}
+
+{% block contenido %}
+<div class="tarjeta">
+    <h1>Borrar mi cuenta</h1>
+    <p>Se borrarán tu cuenta, todos tus reportes y tu participación en todos tus núcleos. <strong>Esto no se puede deshacer.</strong></p>
+    <p class="suave">Si creaste un núcleo donde hay más personas, seguirá funcionando y quedará a cargo de quien lleve más tiempo en él. Los núcleos donde estás solo o sola se borrarán.</p>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="boton ayuda">Sí, borrar mi cuenta</button>
+    </form>
+    <p><a href="{% url 'mi_cuenta' %}">Cancelar</a></p>
+</div>
+{% endblock %}

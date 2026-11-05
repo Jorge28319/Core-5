@@ -28,4 +28,6 @@ urlpatterns = [path("nucleos/", views.nucleos, name="nucleos"),
     path("ingresar/", auth_views.LoginView.as_view(authentication_form=IngresoForm), name="login"),
     path("salir/", auth_views.LogoutView.as_view(), name="logout"),
     path("nosotros/", views.nosotros, name="nosotros"),
+    path("cuenta/", views.mi_cuenta, name="mi_cuenta"),
+    path("cuenta/borrar/", views.borrar_cuenta, name="borrar_cuenta"),
 ]
