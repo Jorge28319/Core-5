@@ -10,12 +10,7 @@
 <body>
     <header class="barra">
         <div class="barra-contenido">
-            <div class="marca">
-                <a href="/" class="logo"><span class="logo-icono">✓</span> Repórtate ya</a>
-                {% if user.is_authenticated %}
-                    <a href="{% url 'mi_cuenta' %}" class="mi-cuenta">Mi cuenta</a>
-                {% endif %}
-            </div>
+            <a href="/" class="logo"><span class="logo-icono">✓</span> Repórtate ya</a>
             <nav class="menu">
                 <a href="/">Inicio</a>
                 <a href="{% url 'panel' %}">Panel</a>
@@ -25,7 +20,7 @@
             <div class="cuenta">
                 {% if user.is_authenticated %}
                     {% with nombre=user.first_name|default:user.username %}
-                        <span class="persona"><span class="circulo">{{ nombre|first|upper }}</span>{{ nombre }}</span>
+                        <a href="{% url 'mi_cuenta' %}" class="persona" title="Mi cuenta"><span class="circulo">{{ nombre|first|upper }}</span>{{ nombre }}</a>
                     {% endwith %}
                     <form method="post" action="{% url 'logout' %}">
                         {% csrf_token %}

@@ -28,6 +28,10 @@ class BorrarCuentaTests(TestCase):
         respuesta = self.client.get(reverse("mi_cuenta"))
         self.assertRedirects(respuesta, reverse("login") + "?next=" + reverse("mi_cuenta"))
 
+    def test_el_nombre_del_encabezado_lleva_a_mi_cuenta(self):
+        respuesta = self.client.get(reverse("inicio"))
+        self.assertContains(respuesta, f'<a href="{reverse("mi_cuenta")}" class="persona"')
+
     def test_mi_cuenta_lleva_a_la_confirmacion(self):
         respuesta = self.client.get(reverse("mi_cuenta"))
         self.assertContains(respuesta, reverse("borrar_cuenta"))
