@@ -23,8 +23,7 @@ body {
 }
 
 h1,
-h2,
-.logo {
+h2 {
     font-family: system-ui, "Segoe UI", Roboto, sans-serif;
     font-weight: 800;
     letter-spacing: -0.02em;
@@ -36,10 +35,6 @@ a {
     text-decoration: none;
 }
 
-.barra {
-    border-bottom: 1px solid var(--borde);
-}
-
 .barra-contenido {
     max-width: 1080px;
     margin: 0 auto;
@@ -49,23 +44,6 @@ a {
     align-items: center;
     justify-content: space-between;
     gap: 12px;
-}
-
-.logo {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.logo-icono {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 36px;
-    height: 36px;
-    border-radius: 8px;
-    background: var(--marca);
-    color: #ffffff;
 }
 
 .menu {
@@ -365,12 +343,6 @@ button {
     flex-wrap: wrap;
     align-items: center;
     gap: 8px 14px;
-}
-
-.pie-marca .logo-icono {
-    width: 28px;
-    height: 28px;
-    font-size: 15px;
 }
 
 .pie-menu {
@@ -877,3 +849,8 @@ button {
     display: block;
     font-size: 14px;
 }
+
+.barra { padding: 12px 16px; background: #ffffff; border-bottom: 1px solid #e5e7eb; }
+.logo { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; color: #1f2937; font-weight: 700; font-size: 20px; }
+.pin { width: 18px; height: 18px; background: var(--marca); border-radius: 50% 50% 50% 0; transform: rotate(-45deg); position: relative; margin: 0 2px 4px; }
+.pin::after { content: ""; position: absolute; width: 8px; height: 8px; top: 5px; left: 5px; background: #ffffff; border-radius: 50%; }
