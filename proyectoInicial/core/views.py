@@ -42,8 +42,10 @@ def estados_del_nucleo(nucleo):
     filas = []
     if evento:
         for membresia in nucleo.membresia_set.all():
+            # Solo cuentan los reportes hechos mientras la persona está en el núcleo
+            desde = max(evento.fecha_inicio, membresia.fecha_union)
             reporte = (
-                Reporte.objects.filter(usuario=membresia.usuario, fecha_hora__gte=evento.fecha_inicio)
+                Reporte.objects.filter(usuario=membresia.usuario, fecha_hora__gte=desde)
                 .order_by("-fecha_hora")
                 .first()
             )
