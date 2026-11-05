@@ -75,3 +75,19 @@ class UnirseForm(forms.Form):
         if not Nucleo.objects.filter(codigo_invitacion=codigo).exists():
             raise forms.ValidationError("No encontramos un núcleo con ese código. Revisa que esté bien escrito.")
         return codigo
+
+class BorrarCuentaForm(forms.Form):
+    password = forms.CharField(
+        label="Escribe tu contraseña para confirmar",
+        widget=forms.PasswordInput(attrs={"autocomplete": "current-password"}),
+    )
+
+    def __init__(self, usuario, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.usuario = usuario
+
+    def clean_password(self):
+        password = self.cleaned_data["password"]
+        if not self.usuario.check_password(password):
+            raise forms.ValidationError("La contraseña no es correcta. No se borró nada.")
+        return password

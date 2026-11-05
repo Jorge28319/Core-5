@@ -3,13 +3,14 @@ import string
 import math
 
 from django.contrib import messages
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from django.db import transaction
+from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect, render
 from django.utils import timezone
 
-from .forms import CrearNucleoForm, RegistroForm, ReporteForm, UnirseForm
+from .forms import BorrarCuentaForm, CrearNucleoForm, RegistroForm, ReporteForm, UnirseForm
 from .models import Evento, Membresia, Nucleo, Reporte
 
 def inicio(request):
@@ -130,24 +131,54 @@ def nucleos(request):
         "mis_nucleos": mis_nucleos,
     })
 
+def sacar_del_nucleo(usuario, nucleo):
+    # Si el núcleo queda vacío se borra; si se va quien lo creó, el rol pasa a quien lleva más tiempo
+    Membresia.objects.filter(usuario=usuario, nucleo=nucleo).delete()
+    siguiente = Membresia.objects.filter(nucleo=nucleo).order_by("fecha_union", "id").first()
+    if siguiente is None:
+        nucleo.delete()
+    elif nucleo.creador == usuario:
+        siguiente.rol = "creador"
+        siguiente.save()
+        nucleo.creador = siguiente.usuario
+        nucleo.save()
+
+
 @login_required
 def salir_nucleo(request, nucleo_id):
     membresia = get_object_or_404(Membresia, nucleo_id=nucleo_id, usuario=request.user)
     nucleo = membresia.nucleo
     if request.method == "POST":
         with transaction.atomic():
-            membresia.delete()
-            siguiente = Membresia.objects.filter(nucleo=nucleo).order_by("fecha_union", "id").first()
-            if siguiente is None:
-                nucleo.delete()
-            elif nucleo.creador == request.user:
-                siguiente.rol = "creador"
-                siguiente.save()
-                nucleo.creador = siguiente.usuario
-                nucleo.save()
+            sacar_del_nucleo(request.user, nucleo)
         messages.success(request, f"Saliste de {nucleo.nombre}.")
         return redirect("nucleos")
     return render(request, "core/salir_nucleo.html", {"nucleo": nucleo})
+
+@login_required
+def mi_cuenta(request):
+    return render(request, "core/mi_cuenta.html")
+
+
+@login_required
+def borrar_cuenta(request):
+    if request.method == "POST":
+        form = BorrarCuentaForm(request.user, request.POST)
+        if form.is_valid():
+            usuario = request.user
+            with transaction.atomic():
+                # Nucleo.creador borra en cascada, así que primero se traspasan sus núcleos
+                nucleos = Nucleo.objects.filter(Q(membresia__usuario=usuario) | Q(creador=usuario)).distinct()
+                for nucleo in nucleos:
+                    sacar_del_nucleo(usuario, nucleo)
+                usuario.delete()
+            logout(request)
+            messages.success(request, "Tu cuenta fue eliminada")
+            return redirect("login")
+    else:
+        form = BorrarCuentaForm(request.user)
+    return render(request, "core/borrar_cuenta.html", {"form": form})
+
 
 def nosotros(request):
     return render(request, "core/nosotros.html")

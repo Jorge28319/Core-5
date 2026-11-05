@@ -877,3 +877,21 @@ button {
     display: block;
     font-size: 14px;
 }
+
+/* Mi cuenta */
+
+.marca {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.mi-cuenta {
+    color: var(--texto-suave);
+    font-size: 16px;
+}
+
+.tarjeta a.boton {
+    box-sizing: border-box;
+    text-align: center;
+}
